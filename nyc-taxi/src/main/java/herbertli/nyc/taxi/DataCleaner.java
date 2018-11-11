@@ -16,7 +16,7 @@ import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 
 public class DataCleaner {
 
-    public static class ColumnMapper extends Mapper<LongWritable, Text, Text, Text> {
+    public static class CleanMapper extends Mapper<LongWritable, Text, Text, Text> {
         public void map(LongWritable key, Text value, Context context)
                 throws IOException, InterruptedException {
             Configuration conf = context.getConfiguration();
@@ -38,7 +38,7 @@ public class DataCleaner {
         }
     }
 
-    public static class ColumnReducer extends Reducer<Text, Text, Text, Text> {
+    public static class CleanReducer extends Reducer<Text, Text, Text, Text> {
         public void reduce(Text key, Iterable<Text> values, Context context)
                 throws IOException, InterruptedException {
             for (Text value: values) {
@@ -60,9 +60,9 @@ public class DataCleaner {
 
         Job job = Job.getInstance(conf, "cleaning nyc taxi data");
         job.setJarByClass(DataCleaner.class);
-        job.setMapperClass(ColumnMapper.class);
-        job.setCombinerClass(ColumnReducer.class);
-        job.setReducerClass(ColumnReducer.class);
+        job.setMapperClass(CleanMapper.class);
+        job.setCombinerClass(CleanReducer.class);
+        job.setReducerClass(CleanReducer.class);
         job.setOutputKeyClass(Text.class);
         job.setOutputValueClass(IntWritable.class);
 

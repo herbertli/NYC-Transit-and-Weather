@@ -15,7 +15,7 @@ import java.io.IOException;
 
 public class DataProfiler {
 
-    public static class ColumnMapper extends Mapper<LongWritable, Text, Text, IntWritable> {
+    public static class ProfileMapper extends Mapper<LongWritable, Text, Text, IntWritable> {
         public void map(LongWritable key, Text value, Context context)
                 throws IOException, InterruptedException {
             int colInd = context.getConfiguration().getInt("colInd", 0);
@@ -24,7 +24,7 @@ public class DataProfiler {
         }
     }
 
-    public static class ColumnReducer extends Reducer<Text, IntWritable, Text, LongWritable> {
+    public static class ProfileReducer extends Reducer<Text, IntWritable, Text, LongWritable> {
         public void reduce(Text key, Iterable<IntWritable> values, Context context)
                 throws IOException, InterruptedException {
             long sum = 0;
@@ -41,8 +41,9 @@ public class DataProfiler {
 
         Job job = Job.getInstance(conf, "Profiling NYC Taxi Data");
         job.setJarByClass(DataProfiler.class);
-        job.setMapperClass(ColumnMapper.class);
-        job.setReducerClass(ColumnReducer.class);
+        job.setMapperClass(ProfileMapper.class);
+        job.setCombinerClass(ProfileReducer.class);
+        job.setReducerClass(ProfileReducer.class);
         job.setOutputKeyClass(Text.class);
         job.setOutputValueClass(IntWritable.class);
 
