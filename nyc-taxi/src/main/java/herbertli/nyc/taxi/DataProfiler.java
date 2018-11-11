@@ -3,31 +3,52 @@ package herbertli.nyc.taxi;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.IntWritable;
+import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Job;
+import org.apache.hadoop.mapreduce.Mapper;
+import org.apache.hadoop.mapreduce.Reducer;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 
+import java.io.IOException;
+
 public class DataProfiler {
 
-    public static void main(String[] args) throws Exception {
-        if (args.length != 4) {
-            System.out.println("Usage: DataProfiler <input path> <output path> <yellow|green|fhv> <col name>");
-            System.exit(0);
+    public static class ColumnMapper extends Mapper<LongWritable, Text, Text, IntWritable> {
+        public void map(LongWritable key, Text value, Context context)
+                throws IOException, InterruptedException {
+            int colInd = context.getConfiguration().getInt("colInd", 0);
+            String[] rowSplit = value.toString().split(",");
+            context.write(new Text(rowSplit[colInd]), new IntWritable(1));
         }
+    }
+
+    public static class ColumnReducer extends Reducer<Text, IntWritable, Text, LongWritable> {
+        public void reduce(Text key, Iterable<IntWritable> values, Context context)
+                throws IOException, InterruptedException {
+            long sum = 0;
+            for (IntWritable value: values) {
+                sum += value.get();
+            }
+            context.write(key, new LongWritable(sum));
+        }
+    }
+
+    public static void main(String[] args) throws Exception {
         Configuration conf = new Configuration();
-        String dataSource = args[2];
-        String dataColumn = args[3];
-        conf.set("dataSource", dataSource);
-        conf.set("dataColumn", dataColumn);
+        conf.setInt("colInd", Integer.parseInt(args[2]));
+
         Job job = Job.getInstance(conf, "Profiling NYC Taxi Data");
         job.setJarByClass(DataProfiler.class);
-        job.setMapperClass(LocationIdMapper.class);
-        job.setReducerClass(LocationIdReducer.class);
+        job.setMapperClass(ColumnMapper.class);
+        job.setReducerClass(ColumnReducer.class);
         job.setOutputKeyClass(Text.class);
         job.setOutputValueClass(IntWritable.class);
+
         FileInputFormat.addInputPath(job, new Path(args[0]));
         FileOutputFormat.setOutputPath(job, new Path(args[1]));
+
         System.exit(job.waitForCompletion(true) ? 0 : 1);
     }
 

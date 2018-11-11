@@ -20,9 +20,9 @@ public class DataCleaner {
         public void map(LongWritable key, Text value, Context context)
                 throws IOException, InterruptedException {
             Configuration conf = context.getConfiguration();
-            String[] rowSplit = value.toString().replace("\"", "").split(",");
+            String[] rowSplit = value.toString().split(",");
             ArrayList<String> rowList = new ArrayList<>();
-            switch (conf.get("schema")) {
+            switch (conf.get("taxi_schema")) {
                 case "yellow":
                     rowList = DataSchema.extractYellow(rowSplit);
                     break;
@@ -50,6 +50,13 @@ public class DataCleaner {
     public static void main(String[] args) throws Exception {
         Configuration conf = new Configuration();
         conf.set("mapred.textoutputformat.separator", ",");
+        if (args[0].contains("yellow")) {
+            conf.set("taxi_schema", "yellow");
+        } else if (args[0].contains("green")) {
+            conf.set("taxi_schema", "green");
+        } else {
+            conf.set("taxi_schema", "fhv");
+        }
 
         Job job = Job.getInstance(conf, "cleaning nyc taxi data");
         job.setJarByClass(DataCleaner.class);
@@ -63,14 +70,6 @@ public class DataCleaner {
         Path outputPath = new Path(inputPath.getName(), "cleaned");
         FileInputFormat.addInputPath(job, inputPath);
         FileOutputFormat.setOutputPath(job, outputPath);
-
-        if (args[0].contains("yellow")) {
-            conf.set("schema", "yellow");
-        } else if (args[0].contains("green")) {
-            conf.set("schema", "green");
-        } else {
-            conf.set("schema", "fhv");
-        }
 
         System.exit(job.waitForCompletion(true) ? 0 : 1);
     }

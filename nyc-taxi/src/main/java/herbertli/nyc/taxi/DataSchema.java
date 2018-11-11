@@ -74,7 +74,9 @@ class DataSchema {
     private static ArrayList<String> extractCol(String[] rowSplit, int...indices) {
         ArrayList<String> selectedCols = new ArrayList<>();
         for (int i: indices) {
-            selectedCols.add(rowSplit[i]);
+            String col = rowSplit[i];
+            String cleanedCol = col.replace("\"", "");
+            selectedCols.add(cleanedCol);
         }
         return selectedCols;
     }
