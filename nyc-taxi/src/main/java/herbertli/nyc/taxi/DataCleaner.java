@@ -67,7 +67,7 @@ public class DataCleaner {
         job.setOutputValueClass(IntWritable.class);
 
         Path inputPath = new Path(args[0]);
-        Path outputPath = new Path(inputPath.getName(), "cleaned");
+        Path outputPath = new Path(inputPath, "cleaned");
         FileInputFormat.addInputPath(job, inputPath);
         FileOutputFormat.setOutputPath(job, outputPath);
 
