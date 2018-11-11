@@ -21,3 +21,22 @@ This repository contains ETL, cleaning, and profiling jobs for NYC Taxi Data.
 * [Trip Data](http://www.nyc.gov/html/tlc/html/about/trip_record_data.shtml)
 * [Taxi Zone Maps and Lookup Tables](http://www.nyc.gov/html/tlc/html/about/trip_record_data.shtml)
  
+## Data Ingest:
+
+* For Green Cab:
+> curl -o green_tripdata_2018-06.csv https://s3.amazonaws.com/nyc-tlc/trip+data/green_tripdata_2018-06.csv
+
+* For Yellow Cab:
+> curl -o yellow_tripdata_2018-05.csv https://s3.amazonaws.com/nyc-tlc/trip+data/yellow_tripdata_2018-05.csv
+
+* For FHV:
+> curl -o fhv_tripdata_2017-11.csv https://s3.amazonaws.com/nyc-tlc/trip+data/fhv_tripdata_2017-11.csv
+
+Move to HDFS using: 
+> hdfs dfs -put data/
+
+Where data/ contains sub-folders containing data for yellow/green cabs and FHV
+
+## Data Profiling:
+
+## Data Schema:

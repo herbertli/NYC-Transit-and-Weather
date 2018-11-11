@@ -11,7 +11,7 @@ import java.time.format.DateTimeFormatter;
 
 public class DateTimeMapper extends Mapper<Object, Text, Text, IntWritable> {
 
-    private static final String TIMESTAMP_PATTERN = "dd/MMM/yyyy:HH:mm:ss";
+    private static final String TIMESTAMP_PATTERN = "yyyy-MM-dd HH:mm:ss";
     private final static IntWritable one = new IntWritable(1);
 
     public void map(Object key, Text value, Context context) throws IOException, InterruptedException {
