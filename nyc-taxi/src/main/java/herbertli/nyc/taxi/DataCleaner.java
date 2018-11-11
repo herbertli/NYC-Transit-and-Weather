@@ -64,7 +64,7 @@ public class DataCleaner {
         job.setCombinerClass(CleanReducer.class);
         job.setReducerClass(CleanReducer.class);
         job.setOutputKeyClass(Text.class);
-        job.setOutputValueClass(IntWritable.class);
+        job.setOutputValueClass(Text.class);
 
         Path inputPath = new Path(args[0]);
         Path outputPath = new Path(inputPath, "cleaned");

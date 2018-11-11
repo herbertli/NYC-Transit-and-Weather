@@ -45,7 +45,7 @@ public class DataProfiler {
         job.setCombinerClass(ProfileReducer.class);
         job.setReducerClass(ProfileReducer.class);
         job.setOutputKeyClass(Text.class);
-        job.setOutputValueClass(IntWritable.class);
+        job.setOutputValueClass(LongWritable.class);
 
         FileInputFormat.addInputPath(job, new Path(args[0]));
         FileOutputFormat.setOutputPath(job, new Path(args[1]));
