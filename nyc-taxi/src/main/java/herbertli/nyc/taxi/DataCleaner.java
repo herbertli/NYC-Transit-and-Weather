@@ -5,13 +5,13 @@ import java.util.ArrayList;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
-import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.Mapper;
 import org.apache.hadoop.mapreduce.Reducer;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
+import org.apache.hadoop.mapreduce.lib.input.TextInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 
 public class DataCleaner {
@@ -21,6 +21,7 @@ public class DataCleaner {
                 throws IOException, InterruptedException {
             Configuration conf = context.getConfiguration();
             String[] rowSplit = value.toString().split(",");
+            if (rowSplit.length < 3) return;
             ArrayList<String> rowList = new ArrayList<>();
             switch (conf.get("taxi_schema")) {
                 case "yellow":
@@ -63,6 +64,7 @@ public class DataCleaner {
         job.setMapperClass(CleanMapper.class);
         job.setCombinerClass(CleanReducer.class);
         job.setReducerClass(CleanReducer.class);
+        job.setInputFormatClass(TextInputFormat.class);
         job.setOutputKeyClass(Text.class);
         job.setOutputValueClass(Text.class);
 
