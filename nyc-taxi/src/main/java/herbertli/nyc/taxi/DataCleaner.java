@@ -34,8 +34,10 @@ public class DataCleaner {
                     rowList = DataSchema.extractFHV(rowSplit);
                     break;
             }
-            Text outValue = new Text(String.join(",", rowList));
-            context.write(outValue, new Text(""));
+            if (rowList != null) {
+                Text outValue = new Text(String.join(",", rowList));
+                context.write(outValue, new Text(""));
+            }
         }
     }
 

@@ -68,12 +68,13 @@ class DataSchema {
         4 - DOLocationID
         5 - SR_Flag
          */
-        return extractCol(rowSplit, 0, 1, 2, 3, 4, 5);
+        return extractCol(rowSplit, 1, 2, 3, 4);
     }
 
     private static ArrayList<String> extractCol(String[] rowSplit, int...indices) {
         ArrayList<String> selectedCols = new ArrayList<>();
         for (int i: indices) {
+            if (i >= rowSplit.length) return null;
             String col = rowSplit[i];
             String cleanedCol = col.replace("\"", "");
             selectedCols.add(cleanedCol);
