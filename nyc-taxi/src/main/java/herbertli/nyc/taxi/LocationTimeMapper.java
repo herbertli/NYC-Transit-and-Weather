@@ -68,7 +68,7 @@ class LocationTimeMapper {
             int minuteOfHour = pickupTime.getMinute();
 
             int pickupLoc;
-            if (!StringUtils.isNumeric(split_line[2])) {
+            if (!StringUtils.isNumeric(split_line[2]) || split_line[2].trim().length() == 0) {
                 pickupLoc = -100;
             } else {
                 pickupLoc = Integer.parseInt(split_line[2]);
