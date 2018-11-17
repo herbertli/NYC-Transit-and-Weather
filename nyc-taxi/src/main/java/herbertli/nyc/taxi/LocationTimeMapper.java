@@ -60,18 +60,28 @@ class LocationTimeMapper {
             } catch (DateTimeParseException e) {
                 return;
             }
-            
+
             int dayOfMonth = pickupTime.getDayOfMonth();
             int year = pickupTime.getYear();
             int month = pickupTime.getMonthValue();
             int hourOfDay = pickupTime.getHour();
             int minuteOfHour = pickupTime.getMinute();
 
-            int pickupLoc = Integer.parseInt(split_line[3]);
+            int pickupLoc;
+            if (!StringUtils.isNumeric(split_line[2])) {
+                pickupLoc = -100;
+            } else {
+                pickupLoc = Integer.parseInt(split_line[2]);
+            }
 
             String date = String.format("%02d/%02d/%04d", month, dayOfMonth, year);
             String time = String.format("%02d:%02d", hourOfDay, minuteOfHour);
-            String outKey = String.join(",", date, time, "" + pickupLoc);
+            String outKey;
+            if (pickupLoc == -100) {
+                outKey = String.join(",", date, time, "null");
+            } else {
+                outKey = String.join(",", date, time, "" + pickupLoc);
+            }
 
             context.write(new Text(outKey), new LongWritable(1));
 
