@@ -8,6 +8,7 @@ import org.apache.hadoop.mapreduce.Mapper;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 
 class LocationTimeMapper {
 
@@ -18,8 +19,13 @@ class LocationTimeMapper {
         @Override
         protected void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException {
             String[] split_line = value.toString().split(",");
-
-            LocalDateTime pickupTime = LocalDateTime.parse(split_line[0], formatter);
+            LocalDateTime pickupTime;
+            // check for header rows...
+            try {
+                pickupTime = LocalDateTime.parse(split_line[0], formatter);
+            } catch (DateTimeParseException e) {
+                return;
+            }
             int dayOfMonth = pickupTime.getDayOfMonth();
             int year = pickupTime.getYear();
             int month = pickupTime.getMonthValue();
