@@ -33,7 +33,13 @@ class LocationTimeMapper {
                 numPassenger = 1;
 
 //            double tripDistance = Double.parseDouble(split_line[3]);
-            int pickupLoc = Integer.parseInt(split_line[4]);
+
+            // check for header rows...
+            int pickupLoc;
+            if (StringUtils.isNumeric(split_line[4]))
+                pickupLoc = Integer.parseInt(split_line[4]);
+            else
+                return;
 
             String outKey = "";
             outKey += String.format("%02d/%02d/%04d", month, dayOfMonth, year);
