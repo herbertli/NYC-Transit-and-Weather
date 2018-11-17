@@ -53,6 +53,7 @@ class LocationTimeMapper {
         @Override
         protected void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException {
             String[] split_line = value.toString().split(",");
+            if (split_line.length < 3) return;
 
             LocalDateTime pickupTime;
             try {
