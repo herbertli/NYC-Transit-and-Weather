@@ -1,4 +1,4 @@
-package herbertli.nyc.taxi;
+package herbertli.nyc.taxi.old;
 
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.Text;

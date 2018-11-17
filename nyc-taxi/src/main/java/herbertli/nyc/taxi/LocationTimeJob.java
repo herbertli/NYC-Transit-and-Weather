@@ -19,6 +19,7 @@ public class LocationTimeJob {
         }
 
         Configuration conf = new Configuration();
+        conf.set("mapred.textoutputformat.separator", ",");
 
         Job job = Job.getInstance(conf, "analyzing nyc taxi data");
         job.setJarByClass(LocationTimeJob.class);

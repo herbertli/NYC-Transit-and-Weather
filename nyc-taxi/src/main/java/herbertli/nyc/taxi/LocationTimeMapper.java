@@ -20,12 +20,14 @@ class LocationTimeMapper {
         protected void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException {
             String[] split_line = value.toString().split(",");
             LocalDateTime pickupTime;
+
             // check for header rows...
             try {
                 pickupTime = LocalDateTime.parse(split_line[0], formatter);
             } catch (DateTimeParseException e) {
                 return;
             }
+
             int dayOfMonth = pickupTime.getDayOfMonth();
             int year = pickupTime.getYear();
             int month = pickupTime.getMonthValue();
@@ -38,21 +40,11 @@ class LocationTimeMapper {
             else
                 numPassenger = 1;
 
-//            double tripDistance = Double.parseDouble(split_line[3]);
+            int pickupLoc = Integer.parseInt(split_line[4]);
 
-            // check for header rows...
-            int pickupLoc;
-            if (StringUtils.isNumeric(split_line[4]))
-                pickupLoc = Integer.parseInt(split_line[4]);
-            else
-                return;
-
-            String outKey = "";
-            outKey += String.format("%02d/%02d/%04d", month, dayOfMonth, year);
-            outKey += String.format("%02d:%02d ", hourOfDay, minuteOfHour);
-            outKey += String.format("%d", pickupLoc);
-//            outKey += String.format("%d %f", pickupLoc, tripDistance);
-
+            String date = String.format("%02d/%02d/%04d", month, dayOfMonth, year);
+            String time = String.format("%02d:%02d", hourOfDay, minuteOfHour);
+            String outKey = String.join(",", date, time, "" + pickupLoc);
             context.write(new Text(outKey), new LongWritable(numPassenger));
         }
     }
@@ -62,7 +54,13 @@ class LocationTimeMapper {
         protected void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException {
             String[] split_line = value.toString().split(",");
 
-            LocalDateTime pickupTime = LocalDateTime.parse(split_line[1], formatter);
+            LocalDateTime pickupTime;
+            try {
+                pickupTime = LocalDateTime.parse(split_line[1], formatter);
+            } catch (DateTimeParseException e) {
+                return;
+            }
+            
             int dayOfMonth = pickupTime.getDayOfMonth();
             int year = pickupTime.getYear();
             int month = pickupTime.getMonthValue();
@@ -71,10 +69,9 @@ class LocationTimeMapper {
 
             int pickupLoc = Integer.parseInt(split_line[3]);
 
-            String outKey = "";
-            outKey += String.format("%02d/%02d/%04d", month, dayOfMonth, year);
-            outKey += String.format("%02d:%02d ", hourOfDay, minuteOfHour);
-            outKey += String.format("%d", pickupLoc);
+            String date = String.format("%02d/%02d/%04d", month, dayOfMonth, year);
+            String time = String.format("%02d:%02d", hourOfDay, minuteOfHour);
+            String outKey = String.join(",", date, time, "" + pickupLoc);
 
             context.write(new Text(outKey), new LongWritable(1));
 
