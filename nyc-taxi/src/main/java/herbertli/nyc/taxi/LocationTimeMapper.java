@@ -20,7 +20,9 @@ class LocationTimeMapper {
             String[] split_line = value.toString().split(",");
 
             LocalDateTime pickupTime = LocalDateTime.parse(split_line[0], formatter);
-            int dayOfWeek = pickupTime.getDayOfWeek().getValue();
+            int dayOfMonth = pickupTime.getDayOfMonth();
+            int year = pickupTime.getYear();
+            int month = pickupTime.getMonthValue();
             int hourOfDay = pickupTime.getHour();
             int minuteOfHour = pickupTime.getMinute();
 
@@ -30,13 +32,14 @@ class LocationTimeMapper {
             else
                 numPassenger = 1;
 
-            double tripDistance = Double.parseDouble(split_line[3]);
+//            double tripDistance = Double.parseDouble(split_line[3]);
             int pickupLoc = Integer.parseInt(split_line[4]);
 
             String outKey = "";
-            outKey += dayOfWeek + " ";
+            outKey += String.format("%02d/%02d/%04d", month, dayOfMonth, year);
             outKey += String.format("%02d:%02d ", hourOfDay, minuteOfHour);
-            outKey += String.format("%d %f", pickupLoc, tripDistance);
+            outKey += String.format("%d", pickupLoc);
+//            outKey += String.format("%d %f", pickupLoc, tripDistance);
 
             context.write(new Text(outKey), new LongWritable(numPassenger));
         }
@@ -48,16 +51,18 @@ class LocationTimeMapper {
             String[] split_line = value.toString().split(",");
 
             LocalDateTime pickupTime = LocalDateTime.parse(split_line[1], formatter);
-            int dayOfWeek = pickupTime.getDayOfWeek().getValue();
+            int dayOfMonth = pickupTime.getDayOfMonth();
+            int year = pickupTime.getYear();
+            int month = pickupTime.getMonthValue();
             int hourOfDay = pickupTime.getHour();
             int minuteOfHour = pickupTime.getMinute();
 
             int pickupLoc = Integer.parseInt(split_line[3]);
 
             String outKey = "";
-            outKey += dayOfWeek + " ";
+            outKey += String.format("%02d/%02d/%04d", month, dayOfMonth, year);
             outKey += String.format("%02d:%02d ", hourOfDay, minuteOfHour);
-            outKey += pickupLoc;
+            outKey += String.format("%d", pickupLoc);
 
             context.write(new Text(outKey), new LongWritable(1));
 
