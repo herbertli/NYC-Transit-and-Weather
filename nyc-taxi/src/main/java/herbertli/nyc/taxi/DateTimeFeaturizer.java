@@ -12,7 +12,7 @@ import org.apache.hadoop.mapreduce.lib.input.TextInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 public class DateTimeFeaturizer {
@@ -20,10 +20,10 @@ public class DateTimeFeaturizer {
     public static class FeaturizeMapper extends Mapper<LongWritable, Text, Text, Text> {
         @Override
         protected void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException {
-            final String TIMESTAMP_PATTERN = "yyyy-MM-dd HH:mm:ss";
+            final String TIMESTAMP_PATTERN = "MM/dd/yyyy";
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern(TIMESTAMP_PATTERN);
             String[] split = value.toString().split(",");
-            LocalDateTime dateTime = LocalDateTime.parse(split[0], formatter);
+            LocalDate dateTime = LocalDate.parse(split[0], formatter);
 
             String month = dateTime.getMonthValue() + "";
             // 1 - Monday, 7 - Sunday
