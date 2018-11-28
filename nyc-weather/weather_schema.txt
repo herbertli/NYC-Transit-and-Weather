@@ -1,0 +1,11 @@
+prcp	type=double, max=2.780000, min=0.000000, avg=0.132524, stdev=0.345540
+snwd	type=double, max=7.900000, min=0.000000, avg=0.214263, stdev=1.037691
+snow	type=double, max=10.000000, min=0.000000, avg=0.107524, stdev=0.803991
+tavg	type=double, max=91.000000, min=11.000000, avg=58.294671, stdev=17.745175
+tmax	type=double, max=101.000000, min=15.000000, avg=65.534483, stdev=18.729084
+tmin	type=double, max=84.000000, min=6.000000, avg=51.849530, stdev=17.300930
+awnd	type=double, max=28.000000, min=4.000000, avg=10.768025, stdev=3.917997
+fog	type=boolean, occurrences=208
+thunder	type=boolean, occurrences=58
+hail	type=boolean, occurrences=9
+haze	type=boolean, occurrences=92
