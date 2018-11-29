@@ -41,7 +41,10 @@ public class IdToNeighborhoodJob {
             if (StringUtils.isNumeric(split[2])) {
                 int locId = Integer.parseInt(split[2]);
                 String locValue = lookup.getOrDefault(locId, "NULL,NULL");
-                String join = String.join(",", value.toString(), locValue);
+                String originalVal = value.toString();
+                originalVal = originalVal.trim();
+                if (originalVal.endsWith(",")) originalVal = originalVal.substring(0, originalVal.length() - 1);
+                String join = String.join(",", originalVal, locValue);
                 context.write(new Text(join), new Text());
             }
         }
@@ -57,8 +60,8 @@ public class IdToNeighborhoodJob {
                 String[] split = line.split(",");
                 if (StringUtils.isNumeric(split[0])) {
                     int id = Integer.parseInt(split[0]);
-                    String borough = split[1];
-                    String zone = split[2];
+                    String borough = split[1].replace("\"", "");
+                    String zone = split[2].replace("\"", "");
                     m.put(id, String.join(",", borough, zone));
                 }
             }
