@@ -38,10 +38,12 @@ public class IdToNeighborhoodJob {
         @Override
         protected void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException {
             String[] split = value.toString().split(",");
-            int locId = Integer.parseInt(split[2]);
-            String locValue = lookup.getOrDefault(locId, "NULL,NULL");
-            String join = String.join(",", value.toString(), locValue);
-            context.write(new Text(join), new Text());
+            if (StringUtils.isNumeric(split[2])) {
+                int locId = Integer.parseInt(split[2]);
+                String locValue = lookup.getOrDefault(locId, "NULL,NULL");
+                String join = String.join(",", value.toString(), locValue);
+                context.write(new Text(join), new Text());
+            }
         }
 
         static HashMap<Integer, String> readFile(URI uri, Context context) throws IOException {
