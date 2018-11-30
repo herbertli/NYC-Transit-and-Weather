@@ -1,4 +1,4 @@
-package herbertli.nyc.taxi;
+package old;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
@@ -23,13 +23,13 @@ public class DateTimeFeaturizer {
             final String TIMESTAMP_PATTERN = "MM/dd/yyyy";
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern(TIMESTAMP_PATTERN);
             String[] split = value.toString().split(",");
-            LocalDate dateTime = LocalDate.parse(split[0], formatter);
+            LocalDate pickupDateTime = LocalDate.parse(split[0], formatter);
 
-            String month = dateTime.getMonthValue() + "";
+            String month = pickupDateTime.getMonthValue() + "";
             // 1 - Monday, 7 - Sunday
-            String dayOfWeek = dateTime.getDayOfWeek().getValue() + "";
-            String dayOfMonth = dateTime.getDayOfMonth() + "";
-            String dayOfYear = dateTime.getDayOfYear() + "";
+            String dayOfWeek = pickupDateTime.getDayOfWeek().getValue() + "";
+            String dayOfMonth = pickupDateTime.getDayOfMonth() + "";
+            String dayOfYear = pickupDateTime.getDayOfYear() + "";
             Text outKey = new Text(String.join(",", value.toString(), month, dayOfMonth, dayOfWeek, dayOfYear));
             context.write(outKey, new Text(""));
         }

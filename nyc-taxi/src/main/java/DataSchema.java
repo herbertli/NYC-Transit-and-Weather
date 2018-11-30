@@ -1,5 +1,3 @@
-package herbertli.nyc.taxi;
-
 import java.util.ArrayList;
 
 class DataSchema {

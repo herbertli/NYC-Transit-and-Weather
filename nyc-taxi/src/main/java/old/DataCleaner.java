@@ -1,4 +1,4 @@
-package herbertli.nyc.taxi;
+package old;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -23,17 +23,17 @@ public class DataCleaner {
             String[] rowSplit = value.toString().split(",");
             if (rowSplit.length < 3) return;
             ArrayList<String> rowList = new ArrayList<>();
-            switch (conf.get("taxi_schema")) {
-                case "yellow":
-                    rowList = DataSchema.extractYellow(rowSplit);
-                    break;
-                case "green":
-                    rowList = DataSchema.extractGreen(rowSplit);
-                    break;
-                case "fhv":
-                    rowList = DataSchema.extractFHV(rowSplit);
-                    break;
-            }
+//            switch (conf.get("taxi_schema")) {
+//                case "yellow":
+//                    rowList = DataSchema.extractYellow(rowSplit);
+//                    break;
+//                case "green":
+//                    rowList = DataSchema.extractGreen(rowSplit);
+//                    break;
+//                case "fhv":
+//                    rowList = DataSchema.extractFHV(rowSplit);
+//                    break;
+//            }
             if (rowList != null) {
                 Text outValue = new Text(String.join(",", rowList));
                 context.write(outValue, new Text(""));
