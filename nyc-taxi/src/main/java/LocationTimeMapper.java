@@ -1,5 +1,4 @@
 import org.apache.commons.lang.StringUtils;
-import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Mapper;
@@ -18,10 +17,10 @@ class LocationTimeMapper {
     static class TaxiMapper extends Mapper<LongWritable, Text, Text, LongWritable> {
         @Override
         protected void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException {
-            Configuration conf = context.getConfiguration();
+
             String[] rowSplit = value.toString().split(",");
             if (rowSplit.length < 3) return;
-            ArrayList<String> rowList = extractCols(rowSplit, conf.get("taxi_schema"));
+            ArrayList<String> rowList = DataSchema.extractYellow(rowSplit);
 
             if (rowList == null) {
                 return;
@@ -73,29 +72,12 @@ class LocationTimeMapper {
         }
     }
 
-    static ArrayList<String> extractCols(String[] allCols, String type) {
-        ArrayList<String> rowList = new ArrayList<>();
-        switch (type) {
-            case "yellow":
-                rowList = DataSchema.extractYellow(allCols);
-                break;
-            case "green":
-                rowList = DataSchema.extractGreen(allCols);
-                break;
-            case "fhv":
-                rowList = DataSchema.extractFHV(allCols);
-                break;
-        }
-        return rowList;
-    }
-
     static class FHVMapper extends Mapper<LongWritable, Text, Text, LongWritable> {
         @Override
         protected void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException {
-            Configuration conf = context.getConfiguration();
             String[] rowSplit = value.toString().split(",");
             if (rowSplit.length < 3) return;
-            ArrayList<String> rowList = extractCols(rowSplit, conf.get("taxi_schema"));
+            ArrayList<String> rowList = DataSchema.extractFHV(rowSplit);
 
             if (rowList == null) {
                 return;

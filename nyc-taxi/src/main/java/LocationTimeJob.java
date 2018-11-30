@@ -24,11 +24,8 @@ public class LocationTimeJob {
 
         if (args[0].contains("yellow") || args[0].contains("green")) {
             job.setMapperClass(LocationTimeMapper.TaxiMapper.class);
-            if (args[0].contains("yellow")) conf.set("taxi_schema", "yellow");
-            else conf.set("taxi_schema", "green");
         } else {
             job.setMapperClass(LocationTimeMapper.FHVMapper.class);
-            conf.set("taxi_schema", "fhv");
         }
 
         job.setCombinerClass(LocationTimeReducer.class);
