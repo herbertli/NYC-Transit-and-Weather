@@ -2,7 +2,6 @@ import java.util.ArrayList;
 
 class DataSchema {
 
-
     static ArrayList<String> extractYellow(String[] rowSplit) {
         /*
         VendorID

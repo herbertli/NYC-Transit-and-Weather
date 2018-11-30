@@ -28,9 +28,9 @@ public class LocationTimeJob {
         job.setJarByClass(LocationTimeJob.class);
 
         if (args[0].contains("yellow")) {
-            job.setMapperClass(LocationTimeMapper.TaxiMapper.class);
+            job.setMapperClass(LocationTimeMapper.YellowMapper.class);
         } else if (args[0].contains("green")) {
-            job.setMapperClass(LocationTimeMapper.TaxiMapper.class);
+            job.setMapperClass(LocationTimeMapper.GreenMapper.class);
         } else {
             job.setMapperClass(LocationTimeMapper.FHVMapper.class);
         }
