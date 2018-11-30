@@ -47,7 +47,7 @@ public class IdToNeighborhoodJob {
             String pickValue = lookup.getOrDefault(pickId, "NULL,NULL");
 
             int dropId = -100;
-            if (StringUtils.isNumeric(sDropOff)) {
+            if (sDropOff.length() > 0 && StringUtils.isNumeric(sDropOff)) {
                 dropId = Integer.parseInt(sDropOff);
             }
             String dropValue = lookup.getOrDefault(dropId, "NULL,NULL");
