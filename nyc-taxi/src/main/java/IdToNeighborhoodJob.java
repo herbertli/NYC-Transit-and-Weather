@@ -41,7 +41,7 @@ public class IdToNeighborhoodJob {
             int pass = Integer.parseInt(split[split.length - 1]);
 
             int pickId = -100;
-            if (StringUtils.isNumeric(sPickup)) {
+            if (sPickup.length() > 0 && StringUtils.isNumeric(sPickup)) {
                 pickId = Integer.parseInt(sPickup);
             }
             String pickValue = lookup.getOrDefault(pickId, "NULL,NULL");
