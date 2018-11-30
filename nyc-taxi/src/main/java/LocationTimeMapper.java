@@ -119,7 +119,7 @@ class LocationTimeMapper {
 
             int numPassenger;
             if (StringUtils.isNumeric(split_line[4]))
-                numPassenger = Integer.parseInt(split_line[2]);
+                numPassenger = Integer.parseInt(split_line[4]);
             else
                 return;
 
