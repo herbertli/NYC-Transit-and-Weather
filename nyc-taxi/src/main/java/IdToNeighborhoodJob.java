@@ -20,12 +20,12 @@ import java.util.HashMap;
 
 public class IdToNeighborhoodJob {
 
-    public static class IdMapper extends Mapper<LongWritable, Text, Text, Text> {
+    public static class IdMapper extends Mapper<LongWritable, Text, Text, LongWritable> {
 
         HashMap<Integer, String> lookup;
 
         @Override
-        protected void setup(Mapper<LongWritable, Text, Text, Text>.Context context) throws IOException, InterruptedException {
+        protected void setup(Mapper<LongWritable, Text, Text, LongWritable>.Context context) throws IOException, InterruptedException {
             if (context.getCacheFiles() != null && context.getCacheFiles().length > 0) {
                 URI zoneLookupPath = context.getCacheFiles()[0];
                 lookup = readFile(zoneLookupPath, context);
@@ -36,15 +36,29 @@ public class IdToNeighborhoodJob {
         @Override
         protected void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException {
             String[] split = value.toString().split(",");
-            if (StringUtils.isNumeric(split[2])) {
-                int locId = Integer.parseInt(split[2]);
-                String locValue = lookup.getOrDefault(locId, "NULL,NULL");
-                String originalVal = value.toString();
-                originalVal = originalVal.trim();
-                if (originalVal.endsWith(",")) originalVal = originalVal.substring(0, originalVal.length() - 1);
-                String join = String.join(",", originalVal, locValue);
-                context.write(new Text(join), new Text());
+            String sPickup = split[split.length - 3];
+            String sDropOff = split[split.length - 2];
+            int pass = Integer.parseInt(split[split.length - 1]);
+
+            int pickId = -100;
+            if (StringUtils.isNumeric(sPickup)) {
+                pickId = Integer.parseInt(sPickup);
             }
+            String pickValue = lookup.getOrDefault(pickId, "NULL,NULL");
+
+            int dropId = -100;
+            if (StringUtils.isNumeric(sDropOff)) {
+                dropId = Integer.parseInt(sDropOff);
+            }
+            String dropValue = lookup.getOrDefault(dropId, "NULL,NULL");
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < split.length - 1; i++) {
+                if (i != 0) sb.append(",");
+                sb.append(split[i]);
+            }
+            String join = String.join(",", sb.toString(), pickValue, dropValue);
+
+            context.write(new Text(join), new LongWritable(pass));
         }
 
         static HashMap<Integer, String> readFile(URI uri, Context context) throws IOException {
@@ -69,12 +83,14 @@ public class IdToNeighborhoodJob {
 
     }
 
-    public static class IdReducer extends Reducer<Text, Text, Text, Text> {
+    public static class IdReducer extends Reducer<Text, LongWritable, Text, LongWritable> {
         @Override
-        protected void reduce(Text key, Iterable<Text> values, Context context) throws IOException, InterruptedException {
-            for (Text value: values) {
-                context.write(key, value);
+        protected void reduce(Text key, Iterable<LongWritable> values, Context context) throws IOException, InterruptedException {
+            long sum = 0;
+            for (LongWritable value: values) {
+                sum += value.get();
             }
+            context.write(key, new LongWritable(sum));
         }
     }
 
@@ -97,7 +113,7 @@ public class IdToNeighborhoodJob {
         job.setReducerClass(IdReducer.class);
         job.setInputFormatClass(TextInputFormat.class);
         job.setOutputKeyClass(Text.class);
-        job.setOutputValueClass(Text.class);
+        job.setOutputValueClass(LongWritable.class);
 
         Path inputPath = new Path(args[0]);
         Path outputPath = new Path(args[1]);
