@@ -22,17 +22,16 @@ object JoinWeatherAndYellow {
 
     import spark.implicits._
 
-    val taxiDF = spark.read
-      .schema(DataSchema.YellowCabSchema)
+    val taxiDF = spark.read.schema(DataSchema.YellowCabSchema)
       .csv(taxiDataPath)
       .withColumn("year", year($"pickupTime"))
       .withColumn("month", month($"pickupTime"))
       .withColumn("dayofmonth", dayofmonth($"pickupTime"))
 
     val weatherDF = spark.read
-      .option("dateFormat", "MM/dd/yyyy")
       .schema(DataSchema.WeatherSchema)
       .csv(weatherDataPath)
+      .withColumn("yeardate", to_date($"yeardate", "MM/dd/yyyy"))
       .withColumn("year", year($"yeardate"))
       .withColumn("month", month($"yeardate"))
       .withColumn("dayofmonth", dayofmonth($"yeardate"))
