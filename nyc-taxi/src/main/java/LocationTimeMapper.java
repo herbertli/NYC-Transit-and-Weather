@@ -148,19 +148,17 @@ class LocationTimeMapper {
             if (rowList == null) {
                 return;
             }
-            String cleanedRow = String.join(",", rowList);
-            String[] split_line = cleanedRow.split(",");
 
             LocalDateTime pickupTime;
             LocalDateTime dropoffTime;
             try {
-                pickupTime = LocalDateTime.parse(split_line[0], formatter);
-                dropoffTime = LocalDateTime.parse(split_line[1], formatter);
+                pickupTime = LocalDateTime.parse(rowList.get(0), formatter);
+                dropoffTime = LocalDateTime.parse(rowList.get(1), formatter);
             } catch (DateTimeParseException e) {
                 return;
             }
-            String pickupDT = split_line[0];
-            String dropoffDT = split_line[1];
+            String pickupDT = rowList.get(0);
+            String dropoffDT = rowList.get(1);
 
 //            int pDayOfMonth = pickupTime.getDayOfMonth();
 //            int pYear = pickupTime.getYear();
@@ -176,12 +174,12 @@ class LocationTimeMapper {
 //            int dMinuteOfHour = dropoffTime.getMinute();
 //            String dropoffDT = String.format("%d,%d,%d,%d,%d", dYear, dMonth, dDayOfMonth, dHourOfDay, dMinuteOfHour);
 //
-            String pickupLoc = split_line[2];
-            if (!StringUtils.isNumeric(split_line[2]))
+            String pickupLoc = rowList.get(2);
+            if (!StringUtils.isNumeric(rowList.get(2)))
                 pickupLoc = "-1";
 
-            String dropoffLoc = split_line[3];
-            if (!StringUtils.isNumeric(split_line[3]))
+            String dropoffLoc = rowList.get(3);
+            if (!StringUtils.isNumeric(rowList.get(3)))
                 dropoffLoc = "-1";
 
             String outKey = String.join(",", pickupDT, dropoffDT, pickupLoc, dropoffLoc);
