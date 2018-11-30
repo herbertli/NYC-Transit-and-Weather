@@ -2,11 +2,11 @@ import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.functions._
 
 
-object JoinWeatherAndYellow {
+object JoinWeatherAndGreen {
   def main(args: Array[String]) {
 
     if (args.length != 3) {
-      println("Usage: JoinWeatherAndYellow <taxi path> <weather path> <output path>")
+      println("Usage: JoinWeatherAndGreen <taxi path> <weather path> <output path>")
       return
     }
 
@@ -22,7 +22,7 @@ object JoinWeatherAndYellow {
 
     import spark.implicits._
 
-    val taxiDF = spark.read.schema(DataSchema.YellowCabSchema)
+    val taxiDF = spark.read.schema(DataSchema.GreenCabSchema)
       .csv(taxiDataPath)
       .withColumn("year", year($"pickupTime"))
       .withColumn("month", month($"pickupTime"))
@@ -41,7 +41,7 @@ object JoinWeatherAndYellow {
       .withColumn("dayofmonth", dayofmonth($"yeardate"))
 
     val joinedDF = taxiDF.join(weatherDF, Seq("year", "month", "dayofmonth"))
-        .drop("year", "month", "dayofmonth", "yeardate")
+      .drop("year", "month", "dayofmonth", "yeardate")
     joinedDF.write.csv(outputPath)
 
     spark.stop()
