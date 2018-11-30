@@ -37,7 +37,7 @@ object JoinWeatherAndYellow {
       .withColumn("month", month($"yeardate"))
       .withColumn("dayofmonth", dayofmonth($"yeardate"))
 
-    val joinedDF = taxiDF.join(weatherDF, taxiDF("year") === weatherDF("year") && taxiDF("month") === weatherDF("month") && taxiDF("dayofmonth") === weatherDF("day"))
+    val joinedDF = taxiDF.join(weatherDF, Seq("year", "month", "dayofmonth"))
     joinedDF.write.csv(outputPath)
 
     spark.stop()
