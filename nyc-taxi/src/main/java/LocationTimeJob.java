@@ -18,11 +18,18 @@ public class LocationTimeJob {
 
         Configuration conf = new Configuration();
         conf.set("mapred.textoutputformat.separator", ",");
+        if (args[0].contains("yellow")) {
+            conf.set("data_type", "yellow");
+        } else if (args[0].contains("green")) {
+            conf.set("data_type", "green");
+        }
 
         Job job = Job.getInstance(conf, "analyzing nyc taxi data");
         job.setJarByClass(LocationTimeJob.class);
 
-        if (args[0].contains("yellow") || args[0].contains("green")) {
+        if (args[0].contains("yellow")) {
+            job.setMapperClass(LocationTimeMapper.TaxiMapper.class);
+        } else if (args[0].contains("green")) {
             job.setMapperClass(LocationTimeMapper.TaxiMapper.class);
         } else {
             job.setMapperClass(LocationTimeMapper.FHVMapper.class);
