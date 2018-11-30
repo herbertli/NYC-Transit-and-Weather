@@ -43,20 +43,22 @@ class LocationTimeMapper {
             } catch (DateTimeParseException e) {
                 return;
             }
+            String pickupDT = split_line[0];
+            String dropoffDT = split_line[1];
 
-            int pDayOfMonth = pickupTime.getDayOfMonth();
-            int pYear = pickupTime.getYear();
-            int pMonth = pickupTime.getMonthValue();
-            int pHourOfDay = pickupTime.getHour();
-            int pMinuteOfHour = pickupTime.getMinute();
-            String pickupDT = String.format("%d,%d,%d,%d,%d", pYear, pMonth, pDayOfMonth, pHourOfDay, pMinuteOfHour);
-
-            int dDayOfMonth = dropoffTime.getDayOfMonth();
-            int dYear = dropoffTime.getYear();
-            int dMonth = dropoffTime.getMonthValue();
-            int dHourOfDay = dropoffTime.getHour();
-            int dMinuteOfHour = dropoffTime.getMinute();
-            String dropoffDT = String.format("%d,%d,%d,%d,%d", dYear, dMonth, dDayOfMonth, dHourOfDay, dMinuteOfHour);
+//            int pDayOfMonth = pickupTime.getDayOfMonth();
+//            int pYear = pickupTime.getYear();
+//            int pMonth = pickupTime.getMonthValue();
+//            int pHourOfDay = pickupTime.getHour();
+//            int pMinuteOfHour = pickupTime.getMinute();
+//            String pickupDT = String.format("%d,%d,%d,%d,%d", pYear, pMonth, pDayOfMonth, pHourOfDay, pMinuteOfHour);
+//
+//            int dDayOfMonth = dropoffTime.getDayOfMonth();
+//            int dYear = dropoffTime.getYear();
+//            int dMonth = dropoffTime.getMonthValue();
+//            int dHourOfDay = dropoffTime.getHour();
+//            int dMinuteOfHour = dropoffTime.getMinute();
+//            String dropoffDT = String.format("%d,%d,%d,%d,%d", dYear, dMonth, dDayOfMonth, dHourOfDay, dMinuteOfHour);
 
             int numPassenger;
             if (StringUtils.isNumeric(split_line[2]))
@@ -98,21 +100,23 @@ class LocationTimeMapper {
             } catch (DateTimeParseException e) {
                 return;
             }
+            String pickupDT = split_line[0];
+            String dropoffDT = split_line[1];
 
-            int pDayOfMonth = pickupTime.getDayOfMonth();
-            int pYear = pickupTime.getYear();
-            int pMonth = pickupTime.getMonthValue();
-            int pHourOfDay = pickupTime.getHour();
-            int pMinuteOfHour = pickupTime.getMinute();
-            String pickupDT = String.format("%d,%d,%d,%d,%d", pYear, pMonth, pDayOfMonth, pHourOfDay, pMinuteOfHour);
-
-            int dDayOfMonth = dropoffTime.getDayOfMonth();
-            int dYear = dropoffTime.getYear();
-            int dMonth = dropoffTime.getMonthValue();
-            int dHourOfDay = dropoffTime.getHour();
-            int dMinuteOfHour = dropoffTime.getMinute();
-            String dropoffDT = String.format("%d,%d,%d,%d,%d", dYear, dMonth, dDayOfMonth, dHourOfDay, dMinuteOfHour);
-
+//            int pDayOfMonth = pickupTime.getDayOfMonth();
+//            int pYear = pickupTime.getYear();
+//            int pMonth = pickupTime.getMonthValue();
+//            int pHourOfDay = pickupTime.getHour();
+//            int pMinuteOfHour = pickupTime.getMinute();
+//            String pickupDT = String.format("%d,%d,%d,%d,%d", pYear, pMonth, pDayOfMonth, pHourOfDay, pMinuteOfHour);
+//
+//            int dDayOfMonth = dropoffTime.getDayOfMonth();
+//            int dYear = dropoffTime.getYear();
+//            int dMonth = dropoffTime.getMonthValue();
+//            int dHourOfDay = dropoffTime.getHour();
+//            int dMinuteOfHour = dropoffTime.getMinute();
+//            String dropoffDT = String.format("%d,%d,%d,%d,%d", dYear, dMonth, dDayOfMonth, dHourOfDay, dMinuteOfHour);
+//
             String pickupLoc = split_line[2];
             if (!StringUtils.isNumeric(split_line[2]))
                 pickupLoc = "-1";
