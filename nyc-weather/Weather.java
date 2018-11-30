@@ -45,7 +45,10 @@ public class Weather {
 
             // get year, month, day
             String year = line.substring(102, 106);
+            String month = line.substring(106, 108);
+            String day = line.substring(108, 110);
 
+            /*
             String month = null;
             if (line.charAt(106) == '0')
                 month = line.substring(107, 108);
@@ -57,6 +60,7 @@ public class Weather {
                 day = line.substring(109, 110);
             else
                 day = line.substring(108, 110);
+            */
 
             // PRIMARY FIELDS
 
@@ -149,7 +153,7 @@ public class Weather {
             String wt09Quality = line.substring(989, 1001).trim();
             wt09 = valid2(wt09, wt09Quality);
 
-            String s = String.format("%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s", year, month, day, prcp, snwd, snow, tavg, tmax, tmin, awnd, fog, wt03, hail, wt08, wt09);
+            String s = String.format("%s/%s/%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s", month, day, year, prcp, snwd, snow, tavg, tmax, tmin, awnd, fog, wt03, hail, wt08, wt09);
             context.write(key, new Text(s));
         }
     }
@@ -237,7 +241,7 @@ public class Weather {
                 String s = text.toString();
                 String[] fields = s.split(",");
 
-                double prcp = Double.parseDouble(fields[3].trim());
+                double prcp = Double.parseDouble(fields[1].trim());
                 prcpValues.add(prcp);
                 prcpSum += prcp;
                 if (prcp > prcpMax)
@@ -245,7 +249,7 @@ public class Weather {
                 if (prcp < prcpMin)
                     prcpMin = prcp;
 
-                double snwd = Double.parseDouble(fields[4].trim());
+                double snwd = Double.parseDouble(fields[2].trim());
                 snwdValues.add(snwd);
                 snwdSum += snwd;
                 if (snwd > snwdMax)
@@ -253,7 +257,7 @@ public class Weather {
                 if (snwd < snwdMin)
                     snwdMin = snwd;
 
-                double snow = Double.parseDouble(fields[5].trim());
+                double snow = Double.parseDouble(fields[3].trim());
                 snowValues.add(snow);
                 snowSum += snow;
                 if (snow > snowMax)
@@ -261,7 +265,7 @@ public class Weather {
                 if (snow < snowMin)
                     snowMin = snow;
 
-                double tavg = Double.parseDouble(fields[6].trim());
+                double tavg = Double.parseDouble(fields[4].trim());
                 tavgValues.add(tavg);
                 tavgSum += tavg;
                 if (tavg > tavgMax)
@@ -269,7 +273,7 @@ public class Weather {
                 if (tavg < tavgMin)
                     tavgMin = tavg;
 
-                double tmax = Double.parseDouble(fields[7].trim());
+                double tmax = Double.parseDouble(fields[5].trim());
                 tmaxValues.add(tmax);
                 tmaxSum += tmax;
                 if (tmax > tmaxMax)
@@ -277,7 +281,7 @@ public class Weather {
                 if (tmax < tmaxMin)
                     tmaxMin = tmax;
 
-                double tmin = Double.parseDouble(fields[8].trim());
+                double tmin = Double.parseDouble(fields[6].trim());
                 tminValues.add(tmin);
                 tminSum += tmin;
                 if (tmin > tminMax)
@@ -285,7 +289,7 @@ public class Weather {
                 if (tmin < tminMin)
                     tminMin = tmin;
 
-                double awnd = Double.parseDouble(fields[9].trim());
+                double awnd = Double.parseDouble(fields[7].trim());
                 awndValues.add(awnd);
                 awndSum += awnd;
                 if (awnd > awndMax)
@@ -293,19 +297,19 @@ public class Weather {
                 if (awnd < awndMin)
                     awndMin = awnd;
 
-                String fog = fields[10].trim();
+                String fog = fields[8].trim();
                 if (fog.equals("1"))
                     fogCount += 1;
 
-                String thunder = fields[11].trim();
+                String thunder = fields[9].trim();
                 if (thunder.equals("1"))
                     thunderCount += 1;
 
-                String hail = fields[12].trim();
+                String hail = fields[10].trim();
                 if (hail.equals("1"))
                     hailCount += 1;
 
-                String haze = fields[13].trim();
+                String haze = fields[11].trim();
                 if (haze.equals("1"))
                     hazeCount += 1;
             }
