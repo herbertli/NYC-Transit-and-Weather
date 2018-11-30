@@ -41,8 +41,8 @@ object JoinWeatherAndFHV {
       .withColumn("dayofmonth", dayofmonth($"yeardate"))
 
     val joinedDF = taxiDF.join(weatherDF, Seq("year", "month", "dayofmonth"))
-      .drop("year", "month", "dayofmonth", "yeardate")
-    joinedDF.write.csv(outputPath)
+      .drop("year", "month", "dayofmonth", "yeardate", "pickupId", "dropoffId")
+    joinedDF.write.parquet(outputPath)
 
     spark.stop()
 
