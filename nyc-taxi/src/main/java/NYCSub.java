@@ -3,11 +3,11 @@ import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Job;
-import org.apache.hadoop.mapreduce.Mapper;
-import org.apache.hadoop.mapreduce.Reducer;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.input.TextInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
+import org.apache.hadoop.mapreduce.Mapper;
+import org.apache.hadoop.mapreduce.Reducer;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -33,7 +33,7 @@ public class NYCSub {
             String[] splitK = split[0].split(";");
 
             if (splitK.length != 4) return;
-            
+
             String date = splitK[0];
             String time = splitK[3];
             String datetime = date + " " + time;
@@ -91,19 +91,18 @@ public class NYCSub {
 
     public static void main(String[] args) throws Exception {
         if (args.length != 2) {
-            System.out.println("Usage NYCSub <input_path> <output_path>");
+            System.out.println("Usage: NYCSub <input_path> <output_path>");
             System.exit(0);
         }
 
         Configuration conf = new Configuration();
         conf.set("mapred.textoutputformat.separator", ",");
 
-        Job job = Job.getInstance(conf, "analyzing nyc taxi data");
+        Job job = Job.getInstance(conf, "analyzing nyc subway data");
         job.setJarByClass(NYCSub.class);
-
         job.setMapperClass(TurnMapper.class);
-        job.setCombinerClass(TurnReducer.class);
         job.setReducerClass(TurnReducer.class);
+
         job.setInputFormatClass(TextInputFormat.class);
         job.setOutputKeyClass(Text.class);
         job.setOutputValueClass(LongWritable.class);
