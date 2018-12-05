@@ -49,7 +49,7 @@ public class NYCSub {
     }
 
     public static class TurnReducer extends Reducer<Text, Text, Text, LongWritable> {
-        private static final String TIMESTAMP_PATTERN = "MM/dd/yyyy HH:mm:ss";
+        private static final String TIMESTAMP_PATTERN = "yyyy-MM-ddTHH:mm";
         private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern(TIMESTAMP_PATTERN);
 
         @Override
