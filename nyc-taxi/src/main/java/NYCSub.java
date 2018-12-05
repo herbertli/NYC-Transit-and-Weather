@@ -26,9 +26,14 @@ public class NYCSub {
 
         @Override
         protected void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException {
-            String[] split = value.toString().split("\\s");
+            String[] split = value.toString().split("\t");
+            if (split.length != 2) return;
+
             String counter = split[1];
             String[] splitK = split[0].split(";");
+
+            if (splitK.length != 4) return;
+            
             String date = splitK[0];
             String time = splitK[3];
             String datetime = date + " " + time;
