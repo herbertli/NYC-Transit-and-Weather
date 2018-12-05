@@ -104,6 +104,8 @@ public class NYCSub {
         job.setReducerClass(TurnReducer.class);
 
         job.setInputFormatClass(TextInputFormat.class);
+        job.setMapOutputKeyClass(Text.class);
+        job.setMapOutputValueClass(Text.class);
         job.setOutputKeyClass(Text.class);
         job.setOutputValueClass(LongWritable.class);
 
