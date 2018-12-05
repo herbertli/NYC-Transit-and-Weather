@@ -49,8 +49,6 @@ public class NYCSub {
     }
 
     public static class TurnReducer extends Reducer<Text, Text, Text, LongWritable> {
-        private static final String TIMESTAMP_PATTERN = "yyyy-MM-ddTHH:mm";
-        private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern(TIMESTAMP_PATTERN);
 
         @Override
         protected void reduce(Text key, Iterable<Text> values, Context context) throws IOException, InterruptedException {
@@ -59,7 +57,7 @@ public class NYCSub {
                 String[] split = value.toString().split(",");
                 long counter = Long.parseLong(split[1]);
                 String datetime1 = split[0];
-                LocalDateTime parsed = LocalDateTime.parse(datetime1, formatter);
+                LocalDateTime parsed = LocalDateTime.parse(datetime1);
                 if (parsed.getMinute() == 0) {
                     parsed = parsed.withSecond(0);
                 } else {
