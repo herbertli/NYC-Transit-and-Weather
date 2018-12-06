@@ -1,3 +1,5 @@
+Weather Data:
+
 Step 1 - Set Up:
 
 copy weather_input.txt and Weather.java to local file system on Dumbo cluster
