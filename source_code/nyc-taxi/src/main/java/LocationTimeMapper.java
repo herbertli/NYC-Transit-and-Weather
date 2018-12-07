@@ -142,21 +142,13 @@ class LocationTimeMapper {
         @Override
         protected void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException {
             String[] rowSplit = value.toString().split(",");
-            if (rowSplit.length < 3) return;
+            if (rowSplit.length != 4) return;
             ArrayList<String> rowList = DataSchema.extractFHV(rowSplit);
 
             if (rowList == null) {
                 return;
             }
 
-            LocalDateTime pickupTime;
-            LocalDateTime dropoffTime;
-            try {
-                pickupTime = LocalDateTime.parse(rowList.get(0), formatter);
-                dropoffTime = LocalDateTime.parse(rowList.get(1), formatter);
-            } catch (DateTimeParseException e) {
-                return;
-            }
             String pickupDT = rowList.get(0);
             String dropoffDT = rowList.get(1);
 

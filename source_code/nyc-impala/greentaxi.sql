@@ -75,8 +75,51 @@ GROUP BY pu_d, pu_mon, pu_year, tavg
 ORDER BY pu_mon ASC, pu_d ASC;
 
 -- Get hourly usage for Jan 2017 in Queens vs. based on snow
-SELECT SUM(pass_n), pu_d, pu_mon, pu_year, snow
+SELECT AVG(pass_n), pu_d, pu_mon, pu_year, snow, pu_b
 FROM green_taxi
-WHERE pu_mon = 1 AND pu_year = 2017 AND pu_b = 'Queens'
-GROUP BY pu_d, pu_mon, pu_year, snow
-ORDER BY snow DESC, pu_d ASC;
+WHERE pu_year = 2017
+GROUP BY pu_d, pu_mon, pu_year, pu_b
+ORDER BY snow DESC, pu_d ASC, pu_mon ASC;
+
+-- # pass when it snows/doesn't
+SELECT SUM(pass_n), pu_b
+FROM green_taxi
+WHERE snow <> 0 AND pu_year = 2017
+GROUP BY pu_b;
+
+SELECT SUM(pass_n), pu_b
+FROM green_taxi
+WHERE snow = 0 AND pu_year = 2017
+GROUP BY pu_b;
+
+SELECT COUNT(DISTINCT pu_d, pu_mon, pu_year)
+FROM green_taxi
+WHERE snow <> 0 AND pu_year = 2017
+
+-- # pass when it rains/doesn't
+SELECT SUM(pass_n), pu_b
+FROM green_taxi
+WHERE prcp <> 0
+GROUP BY pu_b;
+
+SELECT SUM(pass_n), pu_b
+FROM green_taxi
+WHERE prcp = 0
+GROUP BY pu_b;
+
+SELECT COUNT(DISTINCT pu_d, pu_mon, pu_year)
+FROM green_taxi
+WHERE prcp <> 0 AND pu_year = 2017
+
+-- By avg temperature
+SELECT SUM(pass_n), AVG(tavg), pu_d, pu_mon, pu_year
+FROM green_taxi
+WHERE pu_year = 2017
+GROUP BY pu_d, pu_mon, pu_year
+ORDER BY pu_mon ASC, pu_d ASC;
+
+SELECT SUM(pass_n)
+FROM green_taxi
+WHERE pu_year = 2017 AND (pu_b = "EWR" OR pu_b = "Staten Island")
+GROUP BY pu_d, pu_mon, pu_year
+ORDER BY pu_mon ASC, pu_d ASC;

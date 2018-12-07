@@ -31,10 +31,6 @@ object JoinWeatherAndFHV {
     val weatherDF = spark.read
       .schema(DataSchema.WeatherSchema)
       .csv(weatherDataPath)
-      .withColumn("fog", $"fog" >= 1.0)
-      .withColumn("thunder", $"thunder" >= 1.0)
-      .withColumn("hail", $"hail" >= 1.0)
-      .withColumn("haze", $"haze" >= 1.0)
       .withColumn("yeardate", to_date($"yeardate", "MM/dd/yyyy"))
       .withColumn("year", year($"yeardate"))
       .withColumn("month", month($"yeardate"))

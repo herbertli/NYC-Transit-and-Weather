@@ -42,17 +42,19 @@ object DataSchema {
   // 09/30/2018, 0.00, 0.0, 0.0, 65, 73, 58, 7.2, 0, 0, 0, 0
   val WeatherSchema: StructType = StructType(Seq(
     StructField("yeardate", StringType, nullable = true),
-    StructField("prcp", DoubleType, nullable = true),
-    StructField("snwd", DoubleType, nullable = true),
-    StructField("snow", DoubleType, nullable = true),
-    StructField("tavg", DoubleType, nullable = true),
-    StructField("tmax", DoubleType, nullable = true),
-    StructField("tmin", DoubleType, nullable = true),
-    StructField("awnd", DoubleType, nullable = true),
-    StructField("fog", DoubleType, nullable = true),
-    StructField("thunder", DoubleType, nullable = true),
-    StructField("hail", DoubleType, nullable = true),
-    StructField("haze", DoubleType, nullable = true)
+    StructField("prcp", StringType, nullable = true),
+    StructField("prcp_b", StringType, nullable = true),
+    StructField("snwd", StringType, nullable = true),
+    StructField("snow", StringType, nullable = true),
+    StructField("snow_b", StringType, nullable = true),
+    StructField("tavg", StringType, nullable = true),
+    StructField("tmax", StringType, nullable = true),
+    StructField("tmin", StringType, nullable = true),
+    StructField("awnd", StringType, nullable = true),
+    StructField("fog", StringType, nullable = true),
+    StructField("thunder", StringType, nullable = true),
+    StructField("hail", StringType, nullable = true),
+    StructField("haze", StringType, nullable = true)
   ))
 
   val JoinedSchema: StructType = new StructType()
