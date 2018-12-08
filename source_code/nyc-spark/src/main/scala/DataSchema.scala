@@ -28,16 +28,17 @@ object DataSchema {
     .add("passengers", IntegerType, nullable = true)
 
   // 2018-06-30 23:59:57,2018-07-01 00:20:44,247,259,Bronx,West Concourse,Bronx,Woodlawn/Wakefield,1
-  val FHVSchema = new StructType()
-    .add("pickupTime", TimestampType, nullable = true)
-    .add("dropOffTime", TimestampType, nullable = true)
-    .add("pickupId", IntegerType, nullable = true)
-    .add("dropoffId", IntegerType, nullable = true)
-    .add("pickupBoro", StringType, nullable = true)
-    .add("pickupHood", StringType, nullable = true)
-    .add("dropoffBoro", StringType, nullable = true)
-    .add("dropoffHood", StringType, nullable = true)
-    .add("passengers", IntegerType, nullable = true)
+  val FHVSchema: StructType = StructType(Seq(
+    StructField("pickupTime", TimestampType, nullable = true),
+    StructField("dropOffTime", TimestampType, nullable = true),
+    StructField("pickupId", IntegerType, nullable = true),
+    StructField("dropoffId", IntegerType, nullable = true),
+    StructField("pickupBoro", StringType, nullable = true),
+    StructField("pickupHood", StringType, nullable = true),
+    StructField("dropoffBoro", StringType, nullable = true),
+    StructField("dropoffHood", StringType, nullable = true),
+    StructField("passengers", IntegerType, nullable = true)
+  ))
 
   // 09/30/2018, 0.00, 0.0, 0.0, 65, 73, 58, 7.2, 0, 0, 0, 0
   val WeatherSchema: StructType = StructType(Seq(

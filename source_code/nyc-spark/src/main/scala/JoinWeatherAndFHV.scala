@@ -3,6 +3,7 @@ import org.apache.spark.sql.functions._
 
 
 object JoinWeatherAndFHV {
+
   def main(args: Array[String]) {
 
     if (args.length != 3) {
@@ -22,7 +23,8 @@ object JoinWeatherAndFHV {
 
     import spark.implicits._
 
-    val taxiDF = spark.read.schema(DataSchema.FHVSchema)
+    val taxiDF = spark.read
+      .schema(DataSchema.FHVSchema)
       .csv(taxiDataPath)
       .withColumn("year", year($"pickupTime"))
       .withColumn("month", month($"pickupTime"))
@@ -37,8 +39,8 @@ object JoinWeatherAndFHV {
       .withColumn("dayofmonth", dayofmonth($"yeardate"))
 
     val joinedDF = taxiDF.join(weatherDF, Seq("year", "month", "dayofmonth"))
-      .drop("year", "month", "dayofmonth", "yeardate", "pickupId", "dropoffId")
-    joinedDF.write.parquet(outputPath)
+      .drop("year", "month", "dayofmonth", "yeardate")
+    joinedDF.write.csv(outputPath)
 
     spark.stop()
 
