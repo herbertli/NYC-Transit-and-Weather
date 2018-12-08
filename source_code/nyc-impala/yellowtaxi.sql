@@ -1,3 +1,32 @@
+-- Create a table
+CREATE EXTERNAL TABLE yellowtaxi (
+  pu_t TIMESTAMP,
+  do_t TIMESTAMP,
+  distance DOUBLE,
+  pu_id INT,
+  do_id INT,
+  pu_b STRING,
+  pu_n STRING,
+  do_b STRING,
+  do_n STRING,
+  pass_n BIGINT,
+  prcp DOUBLE,
+  prcp_b INT,
+  snwd DOUBLE,
+  snow DOUBLE,
+  snow_b INT,
+  tavg DOUBLE,
+  tmax DOUBLE,
+  tmin DOUBLE,
+  awnd DOUBLE,
+  fog STRING,
+  thunder	STRING,
+  hail STRING,
+  haze STRING
+)
+ROW FORMAT DELIMITED FIELDS TERMINATED BY ','
+LOCATION '/user/hl1785/data/yellow/joined/';
+
 -- Create a view
 CREATE VIEW yellow_taxi AS
   SELECT

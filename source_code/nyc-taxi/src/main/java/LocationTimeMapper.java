@@ -139,8 +139,6 @@ class LocationTimeMapper {
     }
 
     static class FHVMapper extends Mapper<LongWritable, Text, Text, LongWritable> {
-        private static final String TIMESTAMP_PATTERN = "yyyy-MM-dd HH:mm:ss";
-        private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern(TIMESTAMP_PATTERN);
 
         @Override
         protected void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException {
@@ -148,12 +146,6 @@ class LocationTimeMapper {
             if (rowSplit.length != 5) return;
 
             String pickupDT = rowSplit[1].replace("\"", "");
-            try {
-                LocalDateTime pickupTime = LocalDateTime.parse(rowSplit[1], formatter);
-            } catch (Exception e) {
-                return;
-            }
-
             String dropoffDT = rowSplit[2].replace("\"", "");
             if (pickupDT.length() == 0) return;
             if (dropoffDT.length() == 0) dropoffDT = pickupDT;

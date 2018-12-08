@@ -27,18 +27,14 @@ ROW FORMAT DELIMITED FIELDS TERMINATED BY ','
 LOCATION '/user/hl1785/data/fhv/joined/';
 
 CREATE EXTERNAL TABLE temp (
-  pu_t TIMESTAMP,
-  do_t TIMESTAMP,
-  pu_id INT,
-  pu_b STRING,
-  pu_n STRING,
-  do_b STRING,
-  do_n STRING,
-  do_id INT,
-  pass_n INT
+  dis STRING,
+  pu_t STRING,
+  do_t STRING,
+  pu_id STRING,
+  do_id STRING
 )
 ROW FORMAT DELIMITED FIELDS TERMINATED BY ','
-LOCATION '/user/hl1785/data/fhv/withBoro/';
+LOCATION '/user/hl1785/data/fhv/';
 
 CREATE VIEW temp2 AS
   SELECT
