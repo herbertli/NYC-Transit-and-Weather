@@ -145,9 +145,9 @@ class LocationTimeMapper {
             String[] rowSplit = value.toString().replace("\"", "").split(",");
             if (rowSplit.length != 5) return;
 
-            String pickupDT = rowSplit[1].replace("\"", "");
-            String dropoffDT = rowSplit[2].replace("\"", "");
-            if (pickupDT.length() == 0) return;
+            String pickupDT = rowSplit[1];
+            String dropoffDT = rowSplit[2];
+//            if (pickupDT.length() == 0) return;
             if (dropoffDT.length() == 0) dropoffDT = pickupDT;
 
 //            int pDayOfMonth = pickupTime.getDayOfMonth();

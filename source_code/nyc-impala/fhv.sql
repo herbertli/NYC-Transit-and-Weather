@@ -31,10 +31,11 @@ CREATE EXTERNAL TABLE temp (
   pu_t STRING,
   do_t STRING,
   pu_id STRING,
-  do_id STRING
+  do_id STRING,
+  pass_n BIGINT
 )
 ROW FORMAT DELIMITED FIELDS TERMINATED BY ','
-LOCATION '/user/hl1785/data/fhv/';
+LOCATION '/user/hl1785/data/fhv/cleaned';
 
 CREATE VIEW temp2 AS
   SELECT

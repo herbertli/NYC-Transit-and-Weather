@@ -35,7 +35,7 @@ public class LocationTimeJob {
             job.setMapperClass(LocationTimeMapper.FHVMapper.class);
         }
 
-        job.setCombinerClass(LocationTimeReducer.class);
+//        job.setCombinerClass(LocationTimeReducer.class);
         job.setReducerClass(LocationTimeReducer.class);
         job.setInputFormatClass(TextInputFormat.class);
         job.setOutputKeyClass(Text.class);
