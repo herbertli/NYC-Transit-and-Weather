@@ -142,15 +142,10 @@ class LocationTimeMapper {
         @Override
         protected void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException {
             String[] rowSplit = value.toString().split(",");
-            if (rowSplit.length != 4) return;
-            ArrayList<String> rowList = DataSchema.extractFHV(rowSplit);
+            if (rowSplit.length != 5) return;
 
-            if (rowList == null) {
-                return;
-            }
-
-            String pickupDT = rowList.get(0);
-            String dropoffDT = rowList.get(1);
+            String pickupDT = rowSplit[1];
+            String dropoffDT = rowSplit[2];
 
 //            int pDayOfMonth = pickupTime.getDayOfMonth();
 //            int pYear = pickupTime.getYear();
@@ -166,12 +161,12 @@ class LocationTimeMapper {
 //            int dMinuteOfHour = dropoffTime.getMinute();
 //            String dropoffDT = String.format("%d,%d,%d,%d,%d", dYear, dMonth, dDayOfMonth, dHourOfDay, dMinuteOfHour);
 //
-            String pickupLoc = rowList.get(2);
-            if (!StringUtils.isNumeric(rowList.get(2)))
+            String pickupLoc = rowSplit[3];
+            if (pickupLoc.length == 0 || !StringUtils.isNumeric(rowSplit[3]))
                 pickupLoc = "-1";
 
-            String dropoffLoc = rowList.get(3);
-            if (!StringUtils.isNumeric(rowList.get(3)))
+            String dropoffLoc = rowList.get[4];
+            if (dropoffLoc.length == 0 || !StringUtils.isNumeric(rowSplit[4]))
                 dropoffLoc = "-1";
 
             String outKey = String.join(",", pickupDT, dropoffDT, pickupLoc, dropoffLoc);
