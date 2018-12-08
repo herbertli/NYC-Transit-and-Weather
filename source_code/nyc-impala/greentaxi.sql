@@ -111,6 +111,15 @@ SELECT COUNT(DISTINCT pu_d, pu_mon, pu_year)
 FROM green_taxi
 WHERE prcp <> 0 AND pu_year = 2017
 
+SELECT SUM(pass_n), pu_b
+FROM green_taxi
+WHERE prcp = 0 AND snow = 0 AND pu_year = 2017
+GROUP BY pu_b;
+
+SELECT COUNT(DISTINCT pu_d, pu_mon, pu_year)
+FROM green_taxi
+WHERE prcp = 0 AND snow = 0 AND pu_year = 2017;
+
 -- By avg temperature
 SELECT SUM(pass_n), AVG(tavg), pu_d, pu_mon, pu_year
 FROM green_taxi
