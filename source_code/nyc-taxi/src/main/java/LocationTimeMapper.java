@@ -144,7 +144,7 @@ class LocationTimeMapper {
 
         @Override
         protected void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException {
-            String[] rowSplit = value.toString().split(",");
+            String[] rowSplit = value.toString().replace("\"", "").split(",");
             if (rowSplit.length != 5) return;
 
             String pickupDT = rowSplit[1].replace("\"", "");
