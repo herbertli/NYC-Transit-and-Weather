@@ -147,14 +147,14 @@ class LocationTimeMapper {
             String[] rowSplit = value.toString().split(",");
             if (rowSplit.length != 5) return;
 
-            String pickupDT = rowSplit[1];
+            String pickupDT = rowSplit[1].replace("\"", "");
             try {
                 LocalDateTime pickupTime = LocalDateTime.parse(rowSplit[1], formatter);
             } catch (Exception e) {
                 return;
             }
 
-            String dropoffDT = rowSplit[2];
+            String dropoffDT = rowSplit[2].replace("\"", "");
             if (pickupDT.length() == 0) return;
             if (dropoffDT.length() == 0) dropoffDT = pickupDT;
 
