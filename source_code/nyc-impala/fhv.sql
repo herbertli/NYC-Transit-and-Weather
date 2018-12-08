@@ -30,11 +30,15 @@ CREATE EXTERNAL TABLE temp (
   pu_t TIMESTAMP,
   do_t TIMESTAMP,
   pu_id INT,
+  pu_b STRING,
+  pu_n STRING,
+  do_b STRING,
+  do_n STRING,
   do_id INT,
   pass_n INT
 )
 ROW FORMAT DELIMITED FIELDS TERMINATED BY ','
-LOCATION '/user/hl1785/data/fhv/cleaned/';
+LOCATION '/user/hl1785/data/fhv/withBoro/';
 
 CREATE VIEW temp2 AS
   SELECT
@@ -61,13 +65,15 @@ FROM fhv_raw;
 DESCRIBE fhv;
 
 -- # pass when it snows/doesn't
-SELECT SUM(pass_n)
+SELECT SUM(pass_n), pu_b
 FROM fhv
-WHERE snow <> 0 AND pu_year = 2017;
+WHERE snow <> 0 AND pu_year = 2017
+GROUP BY pu_b;
 
-SELECT SUM(pass_n)
+SELECT SUM(pass_n), pu_b
 FROM fhv
-WHERE snow = 0 AND pu_year = 2017;
+WHERE snow = 0 AND pu_year = 2017
+GROUP BY pu_b;
 
 -- # days where it snowed
 SELECT COUNT(DISTINCT pu_d, pu_mon, pu_year)
@@ -76,21 +82,29 @@ WHERE snow <> 0 AND pu_year = 2017;
 
 -- # pass when it rains/doesn't
 -------------------------------------------------------------
-SELECT SUM(pass_n)
+SELECT SUM(pass_n), pu_b
 FROM fhv
-WHERE prcp <> 0 AND pu_year = 2017;
+WHERE prcp <> 0 AND pu_year = 2017
+GROUP BY pu_b;
 
-SELECT SUM(pass_n)
+SELECT SUM(pass_n), pu_b
 FROM fhv
-WHERE prcp = 0 AND pu_year = 2017;
+WHERE prcp = 0 AND pu_year = 2017
+GROUP BY pu_b;
 
 SELECT COUNT(DISTINCT pu_d, pu_mon, pu_year)
 FROM fhv
-WHERE prcp <> 0 AND pu_year = 2017
+WHERE prcp <> 0 AND pu_year = 2017;
 
 -- By avg temperature
 SELECT SUM(pass_n), AVG(tavg), pu_d, pu_mon, pu_year
 FROM fhv
 WHERE pu_year = 2017
+GROUP BY pu_d, pu_mon, pu_year
+ORDER BY pu_mon ASC, pu_d ASC;
+
+SELECT SUM(pass_n), AVG(tavg), pu_d, pu_mon, pu_year
+FROM fhv
+WHERE pu_year = 2017 AND pu_b = "Manhattan"
 GROUP BY pu_d, pu_mon, pu_year
 ORDER BY pu_mon ASC, pu_d ASC;
