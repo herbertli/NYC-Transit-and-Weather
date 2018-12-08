@@ -167,7 +167,7 @@ class LocationTimeMapper {
             if (pickupLoc.length() == 0 || !StringUtils.isNumeric(rowSplit[3]))
                 pickupLoc = "-1";
 
-            String dropoffLoc = rowSplit.get[4];
+            String dropoffLoc = rowSplit[4];
             if (dropoffLoc.length() == 0 || !StringUtils.isNumeric(rowSplit[4]))
                 dropoffLoc = "-1";
 
