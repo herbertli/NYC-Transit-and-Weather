@@ -146,6 +146,8 @@ class LocationTimeMapper {
 
             String pickupDT = rowSplit[1];
             String dropoffDT = rowSplit[2];
+            if (pickupDT.length == 0) return;
+            if (dropoffDT.length == 0) dropoffDT = pickupDT;
 
 //            int pDayOfMonth = pickupTime.getDayOfMonth();
 //            int pYear = pickupTime.getYear();
