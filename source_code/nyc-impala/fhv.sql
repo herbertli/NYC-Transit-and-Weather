@@ -27,7 +27,6 @@ ROW FORMAT DELIMITED FIELDS TERMINATED BY ','
 LOCATION '/user/hl1785/data/fhv/joined/';
 
 CREATE EXTERNAL TABLE temp (
-  dis STRING,
   pu_t STRING,
   do_t STRING,
   pu_id STRING,
