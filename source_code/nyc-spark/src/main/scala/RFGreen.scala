@@ -26,7 +26,7 @@ object RFGreen {
 
     val spark = SparkSession
       .builder()
-      .appName("Spark RF NYC taxi")
+      .appName("Spark LR NYC taxi")
       .getOrCreate()
 //    spark.sparkContext.setLogLevel("ERROR")
 
