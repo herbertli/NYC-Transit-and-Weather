@@ -3,16 +3,16 @@ CREATE EXTERNAL TABLE greencab (
   pu_t TIMESTAMP,
   do_t TIMESTAMP,
   distance DOUBLE,
-  pu_id INT,
-  do_id INT,
   pu_b STRING,
   pu_n STRING,
   do_b STRING,
   do_n STRING,
   pass_n BIGINT,
   prcp DOUBLE,
+  prcp_b INT,
   snwd DOUBLE,
   snow DOUBLE,
+  snow_b INT,
   tavg DOUBLE,
   tmax DOUBLE,
   tmin DOUBLE,
@@ -152,6 +152,12 @@ SELECT SUM(pass_n), AVG(tavg), pu_d, pu_mon, pu_year
 FROM green_taxi
 WHERE pu_year = 2017
 GROUP BY pu_d, pu_mon, pu_year
+ORDER BY pu_mon ASC, pu_d ASC;
+
+SELECT SUM(pass_n), AVG(tavg), pu_d, pu_mon, pu_year, pu_b
+FROM green_taxi
+WHERE pu_year = 2017 AND pu_b = "Brooklyn"
+GROUP BY pu_d, pu_mon, pu_year, pu_b
 ORDER BY pu_mon ASC, pu_d ASC;
 
 SELECT SUM(pass_n)
