@@ -122,6 +122,7 @@ object RFGreen {
       .setLabelCol("passengers")
       .setPredictionCol("passengers_prediction")
       .setNumTrees(100)
+      .setMaxBins(366)
 
     val sparkPipelineEstimatorRf = new Pipeline().setStages(Array(sparkFeaturePipelineModel, randomForest))
     println("Training Random Forest...")
