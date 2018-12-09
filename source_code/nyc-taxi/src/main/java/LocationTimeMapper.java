@@ -27,7 +27,7 @@ class LocationTimeMapper {
                 return;
             }
             String cleanedRow = String.join(",", rowList);
-            String[] split_line = cleanedRow.split(",");
+            String[] split_line = cleanedRow.split(",", -1);
 
             LocalDateTime pickupTime;
             LocalDateTime dropoffTime;
@@ -80,7 +80,7 @@ class LocationTimeMapper {
     static class GreenMapper extends Mapper<LongWritable, Text, Text, LongWritable> {
         @Override
         protected void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException {
-            String[] rowSplit = value.toString().split(",");
+            String[] rowSplit = value.toString().split(",", -1);
             if (rowSplit.length < 3) return;
             ArrayList<String> rowList = DataSchema.extractGreen(rowSplit);
 
@@ -142,7 +142,8 @@ class LocationTimeMapper {
 
         @Override
         protected void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException {
-            String[] rowSplit = value.toString().replace("\"", "").split(",");
+            String[] rowSplit = value.toString().replace("\"", "").split(",", -1);
+            if (rowSplit[0].equals("Dispatching_base_num")) return;
             if (rowSplit.length < 5) return;
 
             String pickupDT = rowSplit[1];
