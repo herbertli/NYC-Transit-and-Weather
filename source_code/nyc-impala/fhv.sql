@@ -19,13 +19,14 @@ CREATE EXTERNAL TABLE fhv_raw (
   tmin DOUBLE,
   awnd DOUBLE,
   fog STRING,
-  thunder	STRING,
+  thunder STRING,
   hail STRING,
   haze STRING
 )
 ROW FORMAT DELIMITED FIELDS TERMINATED BY ','
 LOCATION '/user/hl1785/data/fhv/joined/';
 
+-- Testing / Validation
 CREATE EXTERNAL TABLE temp (
   pu_t STRING,
   do_t STRING,
@@ -45,7 +46,6 @@ CREATE VIEW temp2 AS
     month(temp.pu_t) AS pu_mon,
     year(temp.pu_t) AS pu_year
 FROM temp;
-
 
 -- Create a view
 CREATE VIEW fhv AS
@@ -99,8 +99,19 @@ WHERE pu_year = 2017
 GROUP BY pu_d, pu_mon, pu_year
 ORDER BY pu_mon ASC, pu_d ASC;
 
-SELECT SUM(pass_n), AVG(tavg), pu_d, pu_mon, pu_year
+SELECT SUM(pass_n)
 FROM fhv
 WHERE pu_year = 2017 AND pu_b = "Manhattan"
 GROUP BY pu_d, pu_mon, pu_year
 ORDER BY pu_mon ASC, pu_d ASC;
+
+--- Rain or Snow
+SELECT SUM(pass_n), pu_b
+FROM fhv
+WHERE prcp = 0 AND snow = 0 AND pu_year = 2017
+GROUP BY pu_b;
+
+SELECT SUM(pass_n), pu_b
+FROM fhv
+WHERE (prcp <> 0 OR snow <> 0) AND pu_year = 2017
+GROUP BY pu_b;
