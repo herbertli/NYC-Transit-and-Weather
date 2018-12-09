@@ -3,7 +3,7 @@ import java.sql.Date
 import java.util.Calendar
 
 import org.apache.spark.ml.feature._
-import org.apache.spark.ml.regression.GBTRegressor
+import org.apache.spark.ml.regression.LinearRegression
 import org.apache.spark.ml.{Pipeline, PipelineStage}
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.functions._
@@ -117,12 +117,13 @@ object RFGreen {
 
     // Create our random forest model
     println("Creating Random Forest...")
-    val gbt = new GBTRegressor(uid = "gbt_regression")
+    val gbt = new LinearRegression(uid = "linear_regression")
       .setFeaturesCol("features_rf")
       .setLabelCol("passengers")
       .setPredictionCol("passengers_prediction")
-      .setMaxIter(50)
-      .setMaxBins(366)
+      .setMaxIter(10)
+      .setRegParam(0.3)
+      .setElasticNetParam(0.8)
 
     val sparkPipelineEstimatorRf = new Pipeline().setStages(Array(sparkFeaturePipelineModel, gbt))
     println("Training Random Forest...")
