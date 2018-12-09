@@ -29,7 +29,6 @@ Maven
 ------------------------
 I used maven to build/package all of my MapReduce source files,
 so in order to run any of the below commands, please run (on dumbo):
-> module load mvn
 > cd nyc-taxi
 > mvn clean package
 
@@ -76,7 +75,7 @@ Random Forest
 The following create a prediction model and saves it to some directory (screenshot: "rf_green"):
 
 > cd nyc-spark
-> spark2-submit --class RFGreen --master yarn target/scala-2.11/nyc-spark_2.11-0.1.jar <input path> <output path>
+> spark2-submit --class RFGreen --master yarn target/scala-2.11/nyc-spark_2.11-0.1.jar data/green/joined data/rf/output
 Usage:
 spark2-submit --class RFGreen --master yarn target/scala-2.11/nyc-spark_2.11-0.1.jar <input path> <output path>
 
