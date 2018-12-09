@@ -2,8 +2,6 @@
 CREATE EXTERNAL TABLE fhv_raw (
   pu_t TIMESTAMP,
   do_t TIMESTAMP,
-  pu_id INT,
-  do_id INT,
   pu_b STRING,
   pu_n STRING,
   do_b STRING,

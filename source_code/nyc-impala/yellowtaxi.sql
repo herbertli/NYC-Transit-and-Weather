@@ -3,8 +3,6 @@ CREATE EXTERNAL TABLE yellowtaxi (
   pu_t TIMESTAMP,
   do_t TIMESTAMP,
   distance DOUBLE,
-  pu_id INT,
-  do_id INT,
   pu_b STRING,
   pu_n STRING,
   do_b STRING,

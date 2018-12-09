@@ -9,12 +9,12 @@ import org.apache.spark.sql.functions._
 Code based on:
 https://github.com/combust/mleap-demo/blob/master/notebooks/airbnb-price-regression.ipynb
  */
-object RFTaxi {
+object RFGreen {
 
   def main(args: Array[String]): Unit = {
 
     if (args.length != 2) {
-      println("Usage: RFTaxi <input path> <model output path>")
+      println("Usage: RFGreen <input path> <model output path>")
       System.exit(0)
     }
 
@@ -24,8 +24,8 @@ object RFTaxi {
     val spark = SparkSession
       .builder()
       .appName("Spark RF NYC taxi")
-      .config("spark.some.config.option", "some-value")
       .getOrCreate()
+//    spark.sparkContext.setLogLevel("ERROR")
 
     import spark.implicits._
 
@@ -33,48 +33,45 @@ object RFTaxi {
     val dataset = spark.sqlContext.read.format("csv")
       .schema(DataSchema.JoinedSchema)
       .load(inputFile)
-      .drop("dropOffTime", "tripDistance", "pickupId", "dropoffId", "dropoffBoro", "dropoffHood")
-      .withColumn("pu_year", year($"pickupTime"))
+      .na.drop()
       .withColumn("pu_month", month($"pickupTime"))
       .withColumn("pu_dayofyear", dayofyear($"pickupTime"))
       .withColumn("pu_dayofweek", dayofweek($"pickupTime"))
       .withColumn("pu_day", dayofmonth($"pickupTime"))
       .withColumn("pu_hour", hour($"pickupTime"))
-      .withColumn("pu_min", min($"pickupTime"))
-      .na.drop()
+      .withColumn("pu_min", minute($"pickupTime"))
+      .drop("dropOffTime", "tripDistance", "pickupId", "dropoffId", "dropoffBoro",
+        "dropoffHood", "prcp", "snwd", "snow", "fog", "thunder", "hail", "haze", "tmax", "tmin",
+        "awnd", "pickupTime", "")
+    println("Loaded and featurized data...")
 
-    val continuousFeatures = Array(
-      "prcp",
-      "snwd",
-      "snow",
-      "tavg",
-      "tmax",
-      "tmin",
-      "awnd",
-      "pu_year",
-      "pu_month"
-    )
+    val continuousFeatures = Array("tavg", "pu_hour", "pu_min")
 
     val categoricalFeatures = Array(
       "pickupBoro",
       "pickupHood",
-      "fog",
-      "thunder",
-      "hail",
-      "haze"
+      "prcp_b",
+      "snow_b",
+      "pu_month",
+      "pu_dayofyear",
+      "pu_dayofweek",
+      "pu_day"
     )
 
     // Assemble feature vectors
+    println("Assembling feature vectors...")
     val continuousFeatureAssembler = new VectorAssembler(uid = "continuous_feature_assembler")
       .setInputCols(continuousFeatures)
       .setOutputCol("unscaled_continuous_features")
 
     // scale features
+    println("Scaling data...")
     val continuousFeatureScaler = new StandardScaler(uid = "continuous_feature_scaler")
       .setInputCol("unscaled_continuous_features")
       .setOutputCol("scaled_continuous_features")
 
     // index categorical features
+    println("Indexing data...")
     val categoricalFeatureIndexers = categoricalFeatures.map {
       feature => new StringIndexer(uid = s"string_indexer_$feature")
         .setInputCol(feature)
@@ -82,6 +79,7 @@ object RFTaxi {
     }
 
     // One-hot encode categorical features
+    println("Adding One-hot encodors data...")
     val categoricalFeatureOneHotEncoders = categoricalFeatureIndexers.map {
       indexer => new OneHotEncoderEstimator(uid = s"oh_encoder_${indexer.getOutputCol}")
         .setInputCols(Array(indexer.getOutputCol))
@@ -91,6 +89,7 @@ object RFTaxi {
     val featureColsRf = categoricalFeatureIndexers.map(_.getOutputCol).union(Seq("scaled_continuous_features"))
 
     // assemble all processes categorical and continuous features into a single feature vector
+    println("Assembling all features...")
     val featureAssemblerRf = new VectorAssembler(uid = "feature_assembler_rf")
       .setInputCols(featureColsRf)
       .setOutputCol("features_rf")
@@ -105,22 +104,23 @@ object RFTaxi {
 
     val sparkFeaturePipelineModel = featurePipeline.fit(dataset)
 
-    println("Finished constructing the pipeline")
+    println("Finished constructing the pipeline!")
 
     // Create our random forest model
+    println("Creating Random Forest...")
     val randomForest = new RandomForestRegressor(uid = "random_forest_regression")
       .setFeaturesCol("features_rf")
       .setLabelCol("passengers")
       .setPredictionCol("passengers_prediction")
+      .setNumTrees(100)
 
     val sparkPipelineEstimatorRf = new Pipeline().setStages(Array(sparkFeaturePipelineModel, randomForest))
+    println("Training Random Forest...")
     val sparkPipelineRf = sparkPipelineEstimatorRf.fit(dataset)
+    println("Completed training Random Forest")
 
-    println("Complete: Training Random Forest")
-    val transformedDF = sparkPipelineRf.transform(dataset)
-    transformedDF.show()
-
-//    sparkPipelineRf.save(outputDir)
+    sparkPipelineRf.save(outputDir)
+    println("Model Saved!")
 
   }
 

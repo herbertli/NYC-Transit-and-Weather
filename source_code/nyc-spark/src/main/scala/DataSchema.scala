@@ -1,18 +1,19 @@
-import org.apache.spark.sql.types._
+import org.apache.spark.sql.types.{StructField, _}
 
 object DataSchema {
   // 2084-11-04 11:27:28,2084-11-04 11:39:52,1.07,170,68,Manhattan,Murray Hill,Manhattan,East Chelsea,1
-  val YellowCabSchema: StructType = new StructType()
-    .add("pickupTime", TimestampType, nullable = true)
-    .add("dropOffTime", TimestampType, nullable = true)
-    .add("tripDistance", DoubleType, nullable = true)
-    .add("pickupId", IntegerType, nullable = true)
-    .add("dropoffId", IntegerType, nullable = true)
-    .add("pickupBoro", StringType, nullable = true)
-    .add("pickupHood", StringType, nullable = true)
-    .add("dropoffBoro", StringType, nullable = true)
-    .add("dropoffHood", StringType, nullable = true)
-    .add("passengers", IntegerType, nullable = true)
+  val YellowCabSchema: StructType = StructType(Seq(
+    StructField("pickupTime", TimestampType, nullable = true),
+    StructField("dropOffTime", TimestampType, nullable = true),
+    StructField("tripDistance", DoubleType, nullable = true),
+    StructField("pickupId", IntegerType, nullable = true),
+    StructField("dropoffId", IntegerType, nullable = true),
+    StructField("pickupBoro", StringType, nullable = true),
+    StructField("pickupHood", StringType, nullable = true),
+    StructField("dropoffBoro", StringType, nullable = true),
+    StructField("dropoffHood", StringType, nullable = true),
+    StructField("passengers", IntegerType, nullable = true)
+  ))
 
   // 2018-06-30 23:59:57,2018-07-01 00:21:14,4.31,66,17,Brooklyn,DUMBO/Vinegar Hill,Brooklyn,Bedford,1
   val GreenCabSchema: StructType = StructType(Seq(
@@ -59,26 +60,27 @@ object DataSchema {
     StructField("haze", StringType, nullable = true)
   ))
 
-  val JoinedSchema: StructType = new StructType()
-    .add("pickupTime", TimestampType, nullable = true)
-    .add("dropOffTime", TimestampType, nullable = true)
-    .add("tripDistance", DoubleType, nullable = true)
-    .add("pickupId", IntegerType, nullable = true)
-    .add("dropoffId", IntegerType, nullable = true)
-    .add("pickupBoro", StringType, nullable = true)
-    .add("pickupHood", StringType, nullable = true)
-    .add("dropoffBoro", StringType, nullable = true)
-    .add("dropoffHood", StringType, nullable = true)
-    .add("passengers", IntegerType, nullable = true)
-    .add("prcp", DoubleType, nullable = true)
-    .add("snwd", DoubleType, nullable = true)
-    .add("snow", DoubleType, nullable = true)
-    .add("tavg", DoubleType, nullable = true)
-    .add("tmax", DoubleType, nullable = true)
-    .add("tmin", DoubleType, nullable = true)
-    .add("awnd", DoubleType, nullable = true)
-    .add("fog", BooleanType, nullable = true)
-    .add("thunder", BooleanType, nullable = true)
-    .add("hail", BooleanType, nullable = true)
-    .add("haze", BooleanType, nullable = true)
+  val JoinedSchema: StructType = StructType(Seq(
+    StructField("pickupTime", TimestampType, nullable = true),
+    StructField("dropOffTime", TimestampType, nullable = true),
+    StructField("tripDistance", DoubleType, nullable = true),
+    StructField("pickupBoro", StringType, nullable = true),
+    StructField("pickupHood", StringType, nullable = true),
+    StructField("dropoffBoro", StringType, nullable = true),
+    StructField("dropoffHood", StringType, nullable = true),
+    StructField("passengers", IntegerType, nullable = true),
+    StructField("prcp", DoubleType, nullable = true),
+    StructField("prcp_b", IntegerType, nullable = true),
+    StructField("snwd", DoubleType, nullable = true),
+    StructField("snow", DoubleType, nullable = true),
+    StructField("snow_b", IntegerType, nullable = true),
+    StructField("tavg", DoubleType, nullable = true),
+    StructField("tmax", DoubleType, nullable = true),
+    StructField("tmin", DoubleType, nullable = true),
+    StructField("awnd", DoubleType, nullable = true),
+    StructField("fog", BooleanType, nullable = true),
+    StructField("thunder", BooleanType, nullable = true),
+    StructField("hail", BooleanType, nullable = true),
+    StructField("haze", BooleanType, nullable = true)
+  ))
 }
