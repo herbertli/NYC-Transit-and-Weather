@@ -90,9 +90,9 @@ object RFGreen {
     // One-hot encode categorical features
     println("Adding One-hot encodors data...")
     val categoricalFeatureOneHotEncoders = categoricalFeatureIndexers.map {
-      indexer => new OneHotEncoderEstimator(uid = s"oh_encoder_${indexer.getOutputCol}")
-        .setInputCols(Array(indexer.getOutputCol))
-        .setOutputCols(Array(s"${indexer.getOutputCol}_oh"))
+      indexer => new OneHotEncoder(uid = s"oh_encoder_${indexer.getOutputCol}")
+        .setInputCol(indexer.getOutputCol)
+        .setOutputCol(s"${indexer.getOutputCol}_oh")
     }
 
     val featureColsRf = categoricalFeatureIndexers.map(_.getOutputCol).union(Seq("scaled_continuous_features"))
