@@ -32,12 +32,11 @@ object RFGreen {
 
     import spark.implicits._
 
-    spark.udf.register("DAYOFWEEK", (date: Date) => {
-        val cal = Calendar.getInstance()
-        cal.setTime(date)
-        cal.get(Calendar.DAY_OF_WEEK)
-      }
-    )
+    val dowUDF = udf((date: Date) => {
+      val cal = Calendar.getInstance()
+      cal.setTime(date)
+      cal.get(Calendar.DAY_OF_WEEK)
+    })
 
     // add feature columns and drop null values
     val dataset = spark.sqlContext.read.format("csv")
@@ -46,7 +45,7 @@ object RFGreen {
       .na.drop()
       .withColumn("pu_month", month($"pickupTime"))
       .withColumn("pu_dayofyear", dayofyear($"pickupTime"))
-      .withColumn("pu_dayofweek", DAYOFWEEK($"pickupTime"))
+      .withColumn("pu_dayofweek", dowUDF($"pickupTime"))
       .withColumn("pu_day", dayofmonth($"pickupTime"))
       .withColumn("pu_hour", hour($"pickupTime"))
       .withColumn("pu_min", minute($"pickupTime"))
