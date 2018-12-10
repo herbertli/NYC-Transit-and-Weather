@@ -13,20 +13,21 @@ import java.io.IOException;
 
 public class DataProfiler {
 
-    public static class ProfileMapper extends Mapper<LongWritable, Text, Text, IntWritable> {
+    public static class ProfileMapper extends Mapper<LongWritable, Text, Text, LongWritable> {
         public void map(LongWritable key, Text value, Context context)
                 throws IOException, InterruptedException {
             int colInd = context.getConfiguration().getInt("colInd", 0);
-            String[] rowSplit = value.toString().split(",");
-            context.write(new Text(rowSplit[colInd]), new IntWritable(1));
+            String[] rowSplit = value.toString().split(",", -1);
+            if (rowSplit.length >= colInd + 1)
+                context.write(new Text(rowSplit[colInd]), new LongWritable(1));
         }
     }
 
-    public static class ProfileReducer extends Reducer<Text, IntWritable, Text, LongWritable> {
-        public void reduce(Text key, Iterable<IntWritable> values, Context context)
+    public static class ProfileReducer extends Reducer<Text, LongWritable, Text, LongWritable> {
+        public void reduce(Text key, Iterable<LongWritable> values, Context context)
                 throws IOException, InterruptedException {
             long sum = 0;
-            for (IntWritable value: values) {
+            for (LongWritable value: values) {
                 sum += value.get();
             }
             context.write(key, new LongWritable(sum));
