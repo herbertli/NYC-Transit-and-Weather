@@ -62,7 +62,7 @@ object PredGreen {
       .drop("pu_month", "pu_dayofyear", "pu_dayofweek", "pu_day", "pu_hour", "pu_min")
 
     pred
-      .select("passenger_prediction", originalCols: _*)
+      .select("passengers_prediction", originalCols: _*)
       .write
       .option("header", value = true)
       .option("timestampFormat", value = "yyyy-MM-dd'T'HH:mm:ss")
