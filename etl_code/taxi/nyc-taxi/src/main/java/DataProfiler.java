@@ -17,8 +17,9 @@ public class DataProfiler {
         public void map(LongWritable key, Text value, Context context)
                 throws IOException, InterruptedException {
             int colInd = context.getConfiguration().getInt("colInd", 0);
-            String[] rowSplit = value.toString().split(",");
-            context.write(new Text(rowSplit[colInd]), new LongWritable(1));
+            String[] rowSplit = value.toString().split(",", -1);
+            if (rowSplit.length >= colInd + 1)
+                context.write(new Text(rowSplit[colInd]), new LongWritable(1));
         }
     }
 
