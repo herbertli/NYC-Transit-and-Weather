@@ -1,4 +1,5 @@
 Taxi Data:
+-----------------------
 
 Screenshots:
 -----------------------
@@ -70,26 +71,26 @@ spark2-submit --class JoinWeatherAndGreen --master yarn target/scala-2.11/nyc-sp
 Use JoinWeatherAndYellow and JoinWeatherAndFHV for yellow cab and FHV resp.
 ---------- End Data Joining -------------
 
-Random Forest
+Linear Regression
 ------------------------
-The following create a prediction model and saves it to some directory (screenshot: "rf_green"):
+The following create a prediction model and saves it to some directory (screenshot: "linear_reg1" and "linear_reg2"):
 
 > cd nyc-spark
-> spark2-submit --class RFGreen --master yarn target/scala-2.11/nyc-spark_2.11-0.1.jar data/green/joined data/rf/output
+> spark2-submit --class RFGreen --master yarn target/scala-2.11/nyc-spark_2.11-0.1.jar data/green/joined data/lr/output
 Usage:
 spark2-submit --class RFGreen --master yarn target/scala-2.11/nyc-spark_2.11-0.1.jar <input path> <output path>
 
-The following loads a prediction model and predicts the usage for a given date under given conditions:
-(Follow the prompts :D to generate a usage prediction)
-
+The following loads a prediction model and predicts the usage for a given input data:
+An example of the input is given under source_code/nyc-spark/test_data.csv
 > cd nyc-spark
-> spark2-submit --class PredGreen --master yarn target/scala-2.11/nyc-spark_2.11-0.1.jar <model path>
+> hdfs dfs -put test_data.csv data/lr
+> spark2-submit --class PredGreen target/scala-2.11/nyc-spark_2.11-0.1.jar data/lr/output data/lr/test_data.csv data/lr/output_data
 
 Usage:
-spark2-submit --class PredGreen --master yarn target/scala-2.11/nyc-spark_2.11-0.1.jar <model path>
+spark2-submit --class PredGreen --master yarn target/scala-2.11/nyc-spark_2.11-0.1.jar <model path> <input path> <output path>
 
-As of right now, only green taxi works, sorry about that!
----------- End Random Forest -------------
+As of right now, only green taxi works, and predictions are entirely accurate sorry about that!
+---------- End Linear Regression -------------
 
 Impala Queries
 ------------------------
