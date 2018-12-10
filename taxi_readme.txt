@@ -4,6 +4,41 @@ Taxi:
 
 
 -----------------------
+HDFS Data:
+-----------------------
+Please email hl1785@nyu.edu if you need access
+All the data is stored in dumbo, in the folder: /user/hl1785/data/
+
+Here are the directories pertaining to taxi:
+data/
+    fhv/
+        fhv_tripdata*       - raw trip data from NYC TLC
+        cleaned/            - data with nulls and unneeded columns removed
+        joined/             - joined data with weather data
+        withBoro/           - data with borough and neighborhood added
+    green/
+        green_tripdata*     - raw trip data from NYC TLC
+        cleaned/            - data with nulls and unneeded columns removed
+        joined/             - joined data with weather data
+        withBoro/           - data with borough and neighborhood added
+        prof/               - data generated from profiling drop-off time of green-cab data
+    lr/
+        output/             - folder containing the saved linear regression model
+        test_data.csv       - example test data
+        output_data/        - predictions resulting from using the model on the test data
+    yellow/
+        yellow_tripdata*    - raw trip data from NYC TLC
+        cleaned/            - data with nulls and unneeded columns removed
+        joined/             - joined data with weather data
+        withBoro/           - data with borough and neighborhood added
+    taxi_zone.csv           - csv containing mappings from zone-ids -> borough and neighborhood
+    weatherdata             - csv containing weather data for a particular date
+
+
+
+
+
+-----------------------
 Screenshots:
 -----------------------
 There are screenshots in the screenshots/taxi/ directory showing
