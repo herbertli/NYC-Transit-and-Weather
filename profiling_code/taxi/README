@@ -1,0 +1,4 @@
+For analyzing NYC taxi data, I used maven to all of my MapReduce code
+
+As a result, the code for profiling NYC taxi data is also bundled with the ETL code for taxi
+in the directory /etl_code/taxi/nyc-taxi/
