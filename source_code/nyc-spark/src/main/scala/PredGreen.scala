@@ -48,6 +48,8 @@ object PredGreen {
     val df = spark.read.schema(FeatureRow)
       .csv(inputPath)
 
+    val originalCols: Array[String] = df.columns
+
     val featurized = df
       .withColumn("pu_month", month($"pickupTime"))
       .withColumn("pu_dayofyear", dayofyear($"pickupTime"))
@@ -59,14 +61,12 @@ object PredGreen {
     val pred = rfModel.transform(featurized)
       .drop("pu_month", "pu_dayofyear", "pu_dayofweek", "pu_day", "pu_hour", "pu_min")
 
-    pred.show()
-
-//    pred
-//        .select("passengers")
-//      .write
-//      .option("header", value = true)
-//      .option("timestampFormat", value = "yyyy-MM-dd'T'HH:mm:ss")
-//      .csv(outputPath)
+    pred
+      .select("passenger_prediction", originalCols: _*)
+      .write
+      .option("header", value = true)
+      .option("timestampFormat", value = "yyyy-MM-dd'T'HH:mm:ss")
+      .csv(outputPath)
 
   }
 
