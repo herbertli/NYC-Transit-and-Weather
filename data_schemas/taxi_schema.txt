@@ -1,0 +1,58 @@
+Raw Data Schema
+----------------------------------------
+See:
+http://www.nyc.gov/html/tlc/downloads/pdf/data_dictionary_trip_records_yellow.pdf
+http://www.nyc.gov/html/tlc/downloads/pdf/data_dictionary_trip_records_green.pdf
+http://www.nyc.gov/html/tlc/downloads/pdf/data_dictionary_trip_records_fhv.pdf
+
+
+
+
+Cleaned Data Schema
+----------------------------------------
+For Yellow Cab:
+Original Col # - Field Name - Description/Ranges
+1 - tpep_pickup_datetime - formatted in yyyy-MM-dd hh:MM:ss
+2 - tpep_dropoff_datetime - formatted in yyyy-MM-dd hh:MM:ss
+3 - Passenger_count - number
+4 - Trip_distance - float corresponding to miles
+5 - PULocationID - corresponds to an ID in a lookup table ranges from [1, 265]
+6 - DOLocationID - corresponds to an ID in a lookup table ranges from [1, 265]
+
+For Green Cab:
+Original Col # - Field Name - Description/Ranges
+1 - lpep_pickup_datetime - formatted in yyyy-MM-dd hh:MM:ss
+2 - lpep_dropoff_datetime - formatted in yyyy-MM-dd hh:MM:ss
+3 - Passenger_count - number
+4 - Trip_distance - float corresponding to miles
+5 - PULocationID - corresponds to an ID in a lookup table ranges from [1, 265]
+6 - DOLocationID - corresponds to an ID in a lookup table ranges from [1, 265]
+17 - Trip_type - 1 corresponds to street hail, 2 corresponds to dispatch call
+
+For FHVs (For-hire vehicles):
+Original Col # - Field Name - Description/Ranges
+0 - Dispatching_base_num - Corresponds to a license #, special #s for Uber and Lyft
+1 - Pickup_datetime - formatted in yyyy-MM-dd hh:MM:ss
+2 - DropOff_datetime - formatted in yyyy-MM-dd hh:MM:ss
+3 - PULocationID - corresponds to an ID in a lookup table ranges from [1, 265]
+4 - DOLocationID - same as above
+5 - SR_Flag - Either 0 or a 1, 1 meaning that this trip is from a ride sharing companySR_Flag - 1 or 0, Indicates if the trip was a part of a shared ride chain offered by a High Volume FHV company (e.g. Uber Pool, Lyft Line)
+
+
+
+
+
+Final Schema (for all)
+----------------------------------------
+Computed fields are marked accordingly
+
+Pickup Time
+Drop-off Time
+Trip Distance - in miles
+Pickup Zone ID - number between 1 and 265
+Drop-off Zone ID - same as Pickup Zone ID
+Pickup Borough (comp.) - one of Manhattan, Bronx, Queens, Brooklyn, Staten Island, EWR, Unknown
+Pickup Neighborhood  (comp.) - e.g. West Village
+Drop-off Borough (comp.) - same as Pickup Borough
+Drop-off Neighborhood (comp.) - same as Pickup Neighborhood
+Passengers (comp.)
