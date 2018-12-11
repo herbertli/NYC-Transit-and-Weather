@@ -1,8 +1,6 @@
-# NYC-Transit-and-Weather
+# NYC-Transit-and-Weather (Read me first!)
 
 Github: https://github.com/herbertli/NYC-Transit-and-Weather
-
-## Read me first!
 
 ## In this folder we have provided Readmes for each dataset:
 
